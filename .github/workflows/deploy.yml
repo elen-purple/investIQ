@@ -1,2 +1,27 @@
+name: Deploy Project
+
+on:
+  push:
+    branches:
+      - main
+
 env:
   DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies and Run
+        run: |
+          npm install
+          npm run build
