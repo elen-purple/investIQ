@@ -1,0 +1,17 @@
+import styled from "styled-components";
+
+export const Wrapper = styled.div`
+  @media screen and (min-width: 703px) {
+    border-radius: 30px;
+    box-shadow: 0 10px 60px 0 rgba(170, 178, 197, 0.2);
+    background: #fff;
+    padding: 20px 32px 22px;
+  }
+
+  @media screen and (min-width: 1098px) {
+    border-radius: 30px;
+    box-shadow: 0 10px 60px 0 rgba(170, 178, 197, 0.2);
+    background: #fff;
+    padding: 20px 151px 22px;
+  }
+`;
