@@ -77,6 +77,7 @@ const HomePage = ({
   closeModalD,
   deletedElementId,
   deletedElementAmount,
+  openModalL,
 }: any) => {
   const dispatch = useAppDispatch();
   const location = useLocation();
@@ -120,7 +121,7 @@ const HomePage = ({
       {modal && isMobile ? (
         <Block>
           <GreyBgInput></GreyBgInput>
-          <Header />
+          <Header openModalL={openModalL} />
           <ModalStyled>
             <Container>
               <ArrowBtn

@@ -68,8 +68,6 @@ export const Form = ({ type }: FormProps) => {
           <Subtitle>Smart Finance</Subtitle>
         </Wrapper>
         <Div>
-          {/* <Desc>Ви можете авторизуватися за допомогою акаунта Google</Desc>
-          <button type="button">Google</button> */}
           <Desc>Увійти за допомогою ел. пошти та праолю після реєстрації</Desc>
           <Formik
             initialValues={{ name: "", email: "", password: "" }}

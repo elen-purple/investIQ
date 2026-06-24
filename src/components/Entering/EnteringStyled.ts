@@ -120,6 +120,7 @@ export const BtnList = styled.ul`
   box-shadow: 0 3px 4px 0 rgba(170, 178, 197, 0.4);
   width: 100%;
   border: 2px solid #f5f6fb;
+  z-index: 2;
 `;
 
 export const BtnItem = styled.button`

@@ -84,6 +84,7 @@ function App() {
                   redirectTo="/signup"
                   component={
                     <HomePage
+                      openModalL={openModalL}
                       deletedElementId={deletedElementId}
                       deletedElementAmount={deletedElementAmount}
                       isOpenD={isOpenD}

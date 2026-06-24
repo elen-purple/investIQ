@@ -13,7 +13,7 @@ export const Input = ({
     <Label>
       <Text>{label}</Text>
       <InputStyled
-        type="text"
+        type={type}
         name={type}
         onChange={handleChange}
         value={values}
