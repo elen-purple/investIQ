@@ -1,17 +1,13 @@
 import { Outlet, useLocation } from "react-router-dom";
 import { Entering } from "../../components/Entering/Entering";
 import { Modal } from "../../components/Modal/Modal";
-import { useAppDispatch, useAppSelector } from "../../redux/store";
+import { useAppDispatch } from "../../redux/store";
 import { Navigation } from "../../components/Navigation/Navigation";
 import { Reduction } from "../../components/Reduction/Reduction";
 import { Notification } from "../../components/Notification/Notification";
-import { addMoney, deleteMoney } from "../../redux/money/operations";
 import { Balance } from "../../components/Balance/Balance";
-import { selectBalance } from "../../redux/balance/selectors";
-import { updateBalance } from "../../redux/balance/operations";
 import { NavigateCategories } from "../../components/NavigateCategories/NavigateCategories";
 import { Container } from "../../components/Container/Container";
-import { dataG, dataS } from "../../components/Entering/data";
 import {
   Div,
   DivWrapper,
@@ -46,7 +42,7 @@ const HomePage = ({
   const dispatch = useAppDispatch();
   const location = useLocation();
   const [modal, setModal] = useState<boolean>(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 703);
+  const [_, setIsMobile] = useState(window.innerWidth <= 703);
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 703);
@@ -54,12 +50,6 @@ const HomePage = ({
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-  let data: { label: string; id: string }[];
-  if (location.pathname === "/spendMoney") {
-    data = dataS;
-  } else if (location.pathname === "/getMoney") {
-    data = dataG;
-  }
   return (
     <Section>
       <Modal

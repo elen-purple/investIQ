@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchBalance, updateBalance } from "./operations";
+import { fetchBalance } from "./operations";
 import {
   addTransactionWithBalance,
   deleteTransactionWithBalance,
