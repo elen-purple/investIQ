@@ -70,7 +70,12 @@ export const ExpensesChart = ({
     .filter(({ category }: { category: string }) => {
       return category === currentCategory;
     })
-    .sort((a: any, b: any) => b.amount - a.amount);
+    .sort(
+      (
+        { amount: amountA }: { amount: number },
+        { amount: amountB }: { amount: number },
+      ) => amountB - amountA,
+    );
 
   const options: ChartOptions<"bar"> = {
     responsive: true,
@@ -94,7 +99,7 @@ export const ExpensesChart = ({
           family: "sans-serif",
         },
         color: "#52555F",
-        formatter: (value: any) => `${value.toLocaleString("uk-UA")} грн`,
+        formatter: (value: number) => `${value.toLocaleString("uk-UA")} грн`,
       },
     },
     scales: {

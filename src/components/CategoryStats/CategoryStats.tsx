@@ -67,8 +67,13 @@ export const CategoryStats = ({
       .format(
         Number.parseFloat(
           array
-            .filter(({ category }: any) => category === myCategory)
-            .reduce((sum: any, { amount }: any) => sum + amount, 0),
+            .filter(
+              ({ category }: { category: string }) => category === myCategory,
+            )
+            .reduce(
+              (sum: any, { amount }: { amount: number }) => sum + amount,
+              0,
+            ),
         ),
       )
       .replace(/,/g, " ");
@@ -78,7 +83,7 @@ export const CategoryStats = ({
     <List>
       {location.pathname === "/categories/getMoney" ? (
         <>
-          {dataG.map(({ label, id }: any) => (
+          {dataG.map(({ label, id }: { label: string; id: string }) => (
             <li key={id}>
               <Btn onClick={() => setCurrentCategory(`${id}`)}>
                 <Sum>{getSum(`${id}`)}</Sum>
@@ -106,7 +111,7 @@ export const CategoryStats = ({
         </>
       ) : location.pathname === "/categories/spendMoney" ? (
         <>
-          {dataS.map(({ label, id }: any) => (
+          {dataS.map(({ label, id }: { label: string; id: string }) => (
             <li key={id}>
               <Btn onClick={() => setCurrentCategory(`${id}`)}>
                 <Sum>{getSum(`${id}`)}</Sum>

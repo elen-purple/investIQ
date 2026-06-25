@@ -63,13 +63,16 @@ export const TableStats = ({
           {isMobile ? (
             <List>
               {notes
-                ?.filter(({ type }) => {
+                ?.filter((note) => {
+                  if (!note) return false;
+                  const { type } = note;
+
                   if (location.pathname === "/getMoney") {
                     return type === "+";
                   } else if (location.pathname === "/spendMoney") {
                     return type === "-";
                   } else {
-                    return;
+                    return false;
                   }
                 })
                 .sort((a: any, b: any) => {
@@ -147,7 +150,7 @@ export const TableStats = ({
               </thead>
               <BodyStyled>
                 {notes
-                  ?.filter(({ type }) => {
+                  ?.filter(({ type }: { type: "+" | "-" | "" }) => {
                     if (location.pathname === "/getMoney") {
                       return type === "+";
                     } else if (location.pathname === "/spendMoney") {
@@ -172,33 +175,11 @@ export const TableStats = ({
                       </NameStyled>
                       <NameStyled>{desc}</NameStyled>
                       <NameStyled>
-                        {category === "transport"
-                          ? "Транспорт"
-                          : category === "products"
-                            ? "Продукти"
-                            : category === "health"
-                              ? "Здоров’я"
-                              : category === "alcohole"
-                                ? "Алкоголь"
-                                : category === "entertaining"
-                                  ? "Розваги"
-                                  : category === "home"
-                                    ? "Все для дому"
-                                    : category === "technic"
-                                      ? "Техніка"
-                                      : category === "connection"
-                                        ? "Комуналка, зв’язок"
-                                        : category === "sport"
-                                          ? "Спорт, хобі"
-                                          : category === "education"
-                                            ? "Навчання"
-                                            : category === "other"
-                                              ? "Інше"
-                                              : category === "salary"
-                                                ? "ЗП"
-                                                : category === "addition"
-                                                  ? "Дод. прибуток"
-                                                  : ""}
+                        {
+                          CATEGORY_LABELS[
+                            category as keyof typeof CATEGORY_LABELS
+                          ]
+                        }
                       </NameStyled>
                       <SumDesc
                         style={{

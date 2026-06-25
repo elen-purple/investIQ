@@ -7,7 +7,7 @@ export const Reduction = () => {
   const location = useLocation();
   const notes = useAppSelector((state) => selectNotes(state.money));
   const isLoading = useAppSelector((state) => selectIsLoading(state.money));
-  const months: any[] = [];
+  const months: { month: number; year: number }[] = [];
 
   for (let i = 0; i < 6; i += 1) {
     if (new Date().getMonth() + 1 <= i) {
@@ -23,18 +23,21 @@ export const Reduction = () => {
     }
   }
 
-  const array = months?.map((month: any) => {
+  const array = months?.map((month: { month: number; year: number }) => {
     return {
       month: month.month,
       year: month.year,
       sum: notes
-        .filter(({ type }: { type: "+" | "-" | "" }) => {
+        ?.filter((note) => {
+          if (!note) return false;
+          const { type } = note;
+
           if (location.pathname === "/getMoney") {
             return type === "+";
           } else if (location.pathname === "/spendMoney") {
             return type === "-";
           } else {
-            return;
+            return false;
           }
         })
         .filter(({ date }: { date: string }) => {

@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom";
 import { useAppSelector } from "../../redux/store";
-import { selectAuth } from "../../redux/auth/selectors";
+import { selectAuth } from "../../redux/user/selectors";
 import type { JSX } from "react";
 
 interface PrivateRestrictedRouteProps {

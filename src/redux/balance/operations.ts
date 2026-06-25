@@ -6,7 +6,7 @@ export const fetchBalance = createAsyncThunk<{ balance: number }, void>(
   "balance/fetchBalance",
   async (_, thunkAPI) => {
     const state: any = thunkAPI.getState();
-    const userId = state.auth?.userId;
+    const userId = state.user?.userId;
 
     if (!userId) return thunkAPI.rejectWithValue("Користувач не авторизований");
 
@@ -29,7 +29,7 @@ export const updateBalance = createAsyncThunk<{ balance: number }, number>(
   "balance/updateBalance",
   async (newBalance, thunkAPI) => {
     const state: any = thunkAPI.getState();
-    const userId = state.auth?.userId;
+    const userId = state.user?.userId;
 
     if (!userId) return thunkAPI.rejectWithValue("Користувач не авторизований");
 

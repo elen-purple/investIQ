@@ -1,5 +1,5 @@
 import { useAppSelector } from "../../redux/store";
-import { selectAuth, selectUser } from "../../redux/auth/selectors";
+import { selectAuth, selectUser } from "../../redux/user/selectors";
 import { Container } from "../Container/Container";
 import {
   Avatar,
@@ -15,7 +15,11 @@ import {
 } from "./HeaderStyled";
 import { Link } from "react-router-dom";
 
-export const Header = ({ openModalL }: any) => {
+interface HeaderProps {
+  openModalL: () => void;
+}
+
+export const Header = ({ openModalL }: HeaderProps) => {
   const user = useAppSelector(selectUser);
   const isAuth = useAppSelector(selectAuth);
   const displayName = user?.displayName;

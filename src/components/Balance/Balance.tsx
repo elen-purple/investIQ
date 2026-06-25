@@ -2,9 +2,8 @@ import { Formik } from "formik";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { Button } from "../Button/Button";
 import { selectBalance } from "../../redux/balance/selectors";
-import { addMoney } from "../../redux/money/operations";
-import { updateBalance } from "../../redux/balance/operations";
 import { Form, Input, Subtitle, Wrapper } from "./BalanceStyled";
+import { addTransactionWithBalance } from "../../redux/services/operations";
 
 interface FormValues {
   balance: string;
@@ -45,21 +44,26 @@ export const Balance = () => {
         return errors;
       }}
       onSubmit={async (values: FormValues, { setFieldValue }) => {
-        const difference =
-          parseFloat(values.balance.replace(/\s/g, "")) - balance;
+        const difference = parseFloat(values.balance) - balance;
         if (difference === 0) {
+          setFieldValue(
+            "balance",
+            new Intl.NumberFormat("en-US", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })
+              .format(Number.parseFloat(values.balance))
+              .replace(/,/g, " ") + " UAH",
+          );
           return;
         }
         await dispatch(
-          addMoney({
+          addTransactionWithBalance({
             desc: "Зміна балансу",
             amount: Math.abs(difference),
             category: "other",
             type: difference > 0 ? "+" : difference < 0 ? "-" : "",
           }),
-        );
-        await dispatch(
-          updateBalance(parseFloat(values.balance.replace(/\s/g, ""))),
         );
         setFieldValue(
           "balance",
@@ -72,7 +76,7 @@ export const Balance = () => {
         );
       }}
     >
-      {({ values, handleChange, handleSubmit }) => (
+      {({ values, handleChange, handleSubmit, setFieldValue }) => (
         <Form onSubmit={handleSubmit}>
           <Subtitle>Баланс:</Subtitle>
           <Wrapper>
@@ -85,6 +89,10 @@ export const Balance = () => {
                   e.currentTarget.value = parseFloat(
                     values.balance.replace(/\s/g, ""),
                   ).toString();
+                  setFieldValue(
+                    "balance",
+                    parseFloat(values.balance.replace(/\s/g, "")).toString(),
+                  );
                 }}
                 value={values.balance}
                 placeholder="0.00 UAH"

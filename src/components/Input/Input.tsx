@@ -1,5 +1,15 @@
 import { Error, InputStyled, Label, Text } from "./InputStyled";
 
+interface InputProps {
+  handleChange: any;
+  values: string;
+  errors: string | undefined;
+  touched: any | undefined;
+  type: string;
+  placeholder: string;
+  label: string;
+}
+
 export const Input = ({
   handleChange,
   values,
@@ -8,7 +18,7 @@ export const Input = ({
   type,
   placeholder,
   label,
-}: any) => {
+}: InputProps) => {
   return (
     <Label>
       <Text>{label}</Text>

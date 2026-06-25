@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { addMoney, deleteMoney, fetchMoney } from "./operations";
+import {
+  addTransactionWithBalance,
+  deleteTransactionWithBalance,
+} from "../services/operations";
 
 interface Note {
   id: string;
@@ -37,21 +41,30 @@ const moneySlice = createSlice({
       })
       .addCase(fetchMoney.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message ?? null;
+        state.error =
+          typeof action.payload === "string"
+            ? action.payload
+            : (action.error.message ?? null);
       })
-      .addCase(addMoney.fulfilled, (state, action: any) => {
-        state.notes.push(action.payload);
+      .addCase(addTransactionWithBalance.fulfilled, (state, action: any) => {
+        state.notes.push(action.payload.item);
       })
-      .addCase(addMoney.rejected, (state, action) => {
-        state.error = action.error.message ?? null;
+      .addCase(addTransactionWithBalance.rejected, (state, action) => {
+        state.error =
+          typeof action.payload === "string"
+            ? action.payload
+            : (action.error.message ?? null);
       })
-      .addCase(deleteMoney.fulfilled, (state, action) => {
+      .addCase(deleteTransactionWithBalance.fulfilled, (state, action: any) => {
         state.notes = [
-          ...state.notes.filter(({ id }) => id !== action.payload),
+          ...state.notes.filter(({ id }) => id !== action.payload.itemId),
         ];
       })
-      .addCase(deleteMoney.rejected, (state, action) => {
-        state.error = action.error.message ?? null;
+      .addCase(deleteTransactionWithBalance.rejected, (state, action) => {
+        state.error =
+          typeof action.payload === "string"
+            ? action.payload
+            : (action.error.message ?? null);
       }),
 });
 

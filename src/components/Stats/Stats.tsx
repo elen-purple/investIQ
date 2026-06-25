@@ -31,7 +31,10 @@ export const Stats = ({ currentDate }: { currentDate: StatsProps }) => {
                     new Date(date).getFullYear() === currentDate?.year
                   );
                 })
-                .reduce((sum: any, { amount }: any) => sum + amount, 0),
+                .reduce(
+                  (sum: number, { amount }: { amount: number }) => sum + amount,
+                  0,
+                ),
             )
             .replace(/,/g, " ")}{" "}
           грн.
@@ -57,7 +60,10 @@ export const Stats = ({ currentDate }: { currentDate: StatsProps }) => {
                     new Date(date).getFullYear() === currentDate?.year
                   );
                 })
-                .reduce((sum: any, { amount }: any) => sum + amount, 0),
+                .reduce(
+                  (sum: number, { amount }: { amount: number }) => sum + amount,
+                  0,
+                ),
             )
             .replace(/,/g, " ")}{" "}
           грн.

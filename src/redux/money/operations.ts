@@ -14,7 +14,7 @@ export const fetchMoney = createAsyncThunk(
   "money/fetchMoney",
   async (_, thunkAPI) => {
     const state: any = thunkAPI.getState();
-    const userId = state.auth?.userId;
+    const userId = state.user?.userId;
     if (!userId) return thunkAPI.rejectWithValue("Користувач не авторизований");
     try {
       const listRef = collection(db, "users", userId, "money");
@@ -50,7 +50,7 @@ export const addMoney = createAsyncThunk<
   { desc: string; amount: number; category: string; type: string }
 >("money/addMoney", async ({ desc, amount, category, type }: any, thunkAPI) => {
   const state: any = thunkAPI.getState();
-  const userId = state.auth?.userId;
+  const userId = state.user?.userId;
   if (!userId) return thunkAPI.rejectWithValue("Користувач не авторизований");
   try {
     const listRef = collection(db, "users", userId, "money");
@@ -72,7 +72,7 @@ export const deleteMoney = createAsyncThunk(
   "money/deleteMoney",
   async (itemId: string, thunkAPI) => {
     const state: any = thunkAPI.getState();
-    const userId = state.auth?.userId;
+    const userId = state.user?.userId;
     if (!userId) return thunkAPI.rejectWithValue("Користувач не авторизований");
     try {
       const itemDocRef = doc(db, "users", userId, "money", itemId);

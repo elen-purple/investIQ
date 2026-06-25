@@ -6,7 +6,7 @@ import { MonthsSlider } from "../../components/MonthsSlider/MonthsSlider";
 import { useLocation } from "react-router-dom";
 import { useAppSelector } from "../../redux/store";
 import { selectNotes } from "../../redux/money/selectors";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Stats } from "../../components/Stats/Stats";
 import { Types } from "../../components/Types/Types";
 import { CategoryStats } from "../../components/CategoryStats/CategoryStats";
@@ -41,12 +41,20 @@ export const Categories = () => {
       cur.setMonth(cur.getMonth() + 1);
     }
   }
-  const sortedMonths = months.sort((a: any, b: any) => {
-    if (b.year !== a.year) {
-      return b.year - a.year;
-    }
-    return b.month - a.month;
-  });
+
+  const sortedMonths = useMemo(() => {
+    return months.sort(
+      (
+        { year: yearA, month: monthA }: { year: number; month: number },
+        { year: yearB, month: monthB }: { year: number; month: number },
+      ) => {
+        if (yearB !== yearA) {
+          return yearB - yearA;
+        }
+        return monthB - monthA;
+      },
+    );
+  }, [months]);
 
   const [currentDate, setCurrentDate] = useState<{
     month: number;

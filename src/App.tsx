@@ -8,7 +8,7 @@ import { PrivateRoute } from "./components/PrivateRoute/PrivateRoute";
 import { LogIn } from "./pages/LogIn/LogIn";
 import { useModal } from "./hooks/useModal";
 import { useEffect, useState } from "react";
-import { clearUser, setAuthLoading, setUser } from "./redux/auth/slice";
+import { clearUser, setAuthLoading, setUser } from "./redux/user/slice";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { TableStats } from "./components/TableStats/TableStats";
 import { fetchMoney } from "./redux/money/operations";
@@ -35,7 +35,7 @@ function App() {
     number | null
   >(null);
 
-  const { status } = useAppSelector((state) => state.auth);
+  const { isLoading } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -55,7 +55,7 @@ function App() {
     return () => unsubscribe();
   }, [dispatch]);
 
-  if (status === "loading") {
+  if (isLoading) {
     return (
       <Wrapper>
         <Text>Завантаження додатку...</Text>

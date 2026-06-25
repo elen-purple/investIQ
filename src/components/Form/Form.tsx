@@ -70,7 +70,7 @@ export const Form = ({ type }: FormProps) => {
         <Div>
           <Desc>
             {type === "signup"
-              ? "Зареєстуватися за допомогою ім'я, ел. пошти та паролю"
+              ? "Введіть ім'я, ел. пошту та пароль для реєстрації"
               : "Увійти за допомогою ел. пошти та паролю після реєстрації"}
           </Desc>
           <Formik
@@ -101,28 +101,6 @@ export const Form = ({ type }: FormProps) => {
               return errors;
             }}
             onSubmit={async (values: FormValues, { resetForm }) => {
-              if (type === "signup") {
-                dispatch(
-                  register({
-                    name: values.name,
-                    email: values.email,
-                    password: values.password,
-                  }),
-                );
-                values.email = "";
-                values.password = "";
-                values.name = "";
-              } else if (type === "login") {
-                dispatch(
-                  logIn({
-                    email: values.email,
-                    password: values.password,
-                  }),
-                );
-                values.email = "";
-                values.password = "";
-              }
-              resetForm();
               try {
                 if (type === "signup") {
                   await dispatch(

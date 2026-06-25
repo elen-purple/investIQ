@@ -4,7 +4,17 @@ import { Modal } from "../Modal/Modal";
 import { logOut } from "../../redux/user/operations";
 import { useAppDispatch } from "../../redux/store";
 
-export const SharedLayout = ({ openModalL, isOpenL, closeModalL }: any) => {
+interface SharedLayoutProps {
+  openModalL: () => void;
+  isOpenL: boolean;
+  closeModalL: () => void;
+}
+
+export const SharedLayout = ({
+  openModalL,
+  isOpenL,
+  closeModalL,
+}: SharedLayoutProps) => {
   const dispatch = useAppDispatch();
   return (
     <>
@@ -13,8 +23,8 @@ export const SharedLayout = ({ openModalL, isOpenL, closeModalL }: any) => {
         isOpen={isOpenL}
         closeModal={closeModalL}
         title="Ви дійсно хочете вийти?"
-        action={() => {
-          dispatch(logOut());
+        action={async () => {
+          await dispatch(logOut());
         }}
       />
       <Outlet />

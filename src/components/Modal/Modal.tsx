@@ -5,13 +5,17 @@ interface ModalProps {
   isOpen: boolean;
   closeModal: () => void;
   title: string;
-  action: () => void;
+  action: () => Promise<void>;
 }
 
 export const Modal = ({ isOpen, closeModal, title, action }: ModalProps) => {
-  const handleSuggetion = () => {
-    action();
-    closeModal();
+  const handleSuggestion = async () => {
+    try {
+      await action();
+      closeModal();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleDecline = () => {
@@ -34,7 +38,7 @@ export const Modal = ({ isOpen, closeModal, title, action }: ModalProps) => {
                 bg="orange"
                 shading={false}
                 label="Так"
-                onClick={handleSuggetion}
+                onClick={handleSuggestion}
                 type="button"
               />
               <Button

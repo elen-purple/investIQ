@@ -13,6 +13,7 @@ interface UserState {
   isLoading: boolean;
   errorR: string | null;
   errorL: string | null;
+  userId: null | string;
 }
 
 const initialState: UserState = {
@@ -21,6 +22,7 @@ const initialState: UserState = {
     uid: "",
     displayName: null,
   },
+  userId: null,
   isAuth: false,
   isLoading: false,
   errorR: null,
@@ -30,7 +32,19 @@ const initialState: UserState = {
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    setUser: (state, action) => {
+      state.userId = action.payload;
+      state.isLoading = false;
+    },
+    clearUser: (state) => {
+      state.userId = null;
+      state.isLoading = false;
+    },
+    setAuthLoading: (state) => {
+      state.isLoading = true;
+    },
+  },
   extraReducers: (build) =>
     build
       .addCase(register.fulfilled, (state, action) => {
@@ -81,4 +95,5 @@ const userSlice = createSlice({
       }),
 });
 
+export const { setUser, clearUser, setAuthLoading } = userSlice.actions;
 export const userReducer = userSlice.reducer;

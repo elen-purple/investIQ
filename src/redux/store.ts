@@ -16,7 +16,6 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-import { authReducer } from "./auth/slice";
 import { moneyReducer } from "./money/slice";
 import { balanceReducer } from "./balance/slice";
 
@@ -31,7 +30,6 @@ const persistedReducer = persistReducer(persistConfig, userReducer);
 export const store = configureStore({
   reducer: combineReducers({
     user: persistedReducer,
-    auth: authReducer,
     money: moneyReducer,
     balance: balanceReducer,
   }),

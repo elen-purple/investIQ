@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchBalance, updateBalance } from "./operations";
+import {
+  addTransactionWithBalance,
+  deleteTransactionWithBalance,
+} from "../services/operations";
 
 interface Balance {
   value: number;
@@ -26,10 +30,19 @@ const balanceSlice = createSlice({
             ? action.payload
             : (action.error.message ?? null);
       })
-      .addCase(updateBalance.fulfilled, (state, action) => {
-        state.value = action.payload.balance;
+      .addCase(addTransactionWithBalance.fulfilled, (state, action: any) => {
+        state.value = action.payload.newBalance;
       })
-      .addCase(updateBalance.rejected, (state, action) => {
+      .addCase(addTransactionWithBalance.rejected, (state, action) => {
+        state.error =
+          typeof action.payload === "string"
+            ? action.payload
+            : (action.error.message ?? null);
+      })
+      .addCase(deleteTransactionWithBalance.fulfilled, (state, action: any) => {
+        state.value = action.payload.newBalance;
+      })
+      .addCase(deleteTransactionWithBalance.rejected, (state, action) => {
         state.error =
           typeof action.payload === "string"
             ? action.payload
