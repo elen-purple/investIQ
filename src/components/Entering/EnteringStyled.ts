@@ -92,6 +92,7 @@ export const Btn = styled.button`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  text-align: left;
 
   @media screen and (min-width: 703px) {
     width: 171px;

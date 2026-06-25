@@ -68,7 +68,11 @@ export const Form = ({ type }: FormProps) => {
           <Subtitle>Smart Finance</Subtitle>
         </Wrapper>
         <Div>
-          <Desc>Увійти за допомогою ел. пошти та праолю після реєстрації</Desc>
+          <Desc>
+            {type === "signup"
+              ? "Зареєстуватися за допомогою ім'я, ел. пошти та паролю"
+              : "Увійти за допомогою ел. пошти та паролю після реєстрації"}
+          </Desc>
           <Formik
             initialValues={{ name: "", email: "", password: "" }}
             validate={(values: FormValues) => {
@@ -96,7 +100,7 @@ export const Form = ({ type }: FormProps) => {
               }
               return errors;
             }}
-            onSubmit={(values: FormValues, { resetForm }) => {
+            onSubmit={async (values: FormValues, { resetForm }) => {
               if (type === "signup") {
                 dispatch(
                   register({
@@ -119,6 +123,27 @@ export const Form = ({ type }: FormProps) => {
                 values.password = "";
               }
               resetForm();
+              try {
+                if (type === "signup") {
+                  await dispatch(
+                    register({
+                      name: values.name,
+                      email: values.email,
+                      password: values.password,
+                    }),
+                  ).unwrap();
+                } else if (type === "login") {
+                  await dispatch(
+                    logIn({
+                      email: values.email,
+                      password: values.password,
+                    }),
+                  ).unwrap();
+                }
+                resetForm();
+              } catch (error) {
+                console.log(error);
+              }
             }}
           >
             {({ values, errors, touched, handleChange, handleSubmit }) => (

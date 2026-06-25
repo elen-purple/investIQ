@@ -21,13 +21,19 @@ const balanceSlice = createSlice({
         state.value = action.payload.balance;
       })
       .addCase(fetchBalance.rejected, (state, action) => {
-        state.error = action.error.message ?? null;
+        state.error =
+          typeof action.payload === "string"
+            ? action.payload
+            : (action.error.message ?? null);
       })
       .addCase(updateBalance.fulfilled, (state, action) => {
         state.value = action.payload.balance;
       })
       .addCase(updateBalance.rejected, (state, action) => {
-        state.error = action.error.message ?? null;
+        state.error =
+          typeof action.payload === "string"
+            ? action.payload
+            : (action.error.message ?? null);
       }),
 });
 

@@ -174,7 +174,7 @@ export const Div = styled.div`
   padding: 40px 12px 53px;
   border-radius: 30px;
   width: 282px;
-  box-shadow: 5px 10px 20px 0 rgba(170, 178, 197, 0.4);
+  box-shadow: 0 10px 60px 0 rgba(170, 178, 197, 0.2);
   background: ${(props: any) => props.theme.colors.primaryBg};
 
   @media screen and (min-width: 703px) {

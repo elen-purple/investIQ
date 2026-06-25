@@ -27,7 +27,6 @@ export const Categories = () => {
   const location = useLocation();
   const notes = useAppSelector((state) => selectNotes(state.money));
   const months: { month: number; year: number }[] = [];
-
   if (notes.length > 0) {
     const firstDate = new Date(notes[0].date);
     const endDate = new Date();
@@ -63,7 +62,17 @@ export const Categories = () => {
   );
 
   useEffect(() => {
-    setCurrentDate(sortedMonths[0]);
+    if (!sortedMonths[0]) return;
+
+    setCurrentDate((prev) => {
+      const next = sortedMonths[0];
+
+      if (prev.month === next.month && prev.year === next.year) {
+        return prev;
+      }
+
+      return next;
+    });
   }, [sortedMonths]);
 
   return (

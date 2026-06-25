@@ -20,6 +20,7 @@ import {
   Title,
   Wrapper,
 } from "./TableStatsStyled";
+import { CATEGORY_LABELS } from "../../constants/categories";
 
 interface TableStatsProps {
   setDeletedElementId: React.Dispatch<React.SetStateAction<string | null>>;
@@ -45,18 +46,11 @@ export const TableStats = ({
   const notes = useAppSelector((state) => selectNotes(state.money));
   const isLoading = useAppSelector((state) => selectIsLoading(state.money));
 
-  const handleDelete = (e: any) => {
+  const handleDelete = (e: any, id: string, amount: number) => {
     if (e.target.closest(`[data-action="delete"]`)) {
+      setDeletedElementId(id);
+      setDeletedElementAmount(amount);
       openModalD();
-      setDeletedElementId(e.target.closest(`[data-action="delete"]`).id);
-      setDeletedElementAmount(
-        Number.parseFloat(
-          e.target
-            .closest(`td`)
-            .previousSibling.childNodes[1].textContent.split(" ")
-            .join(""),
-        ),
-      );
     }
   };
 
@@ -97,33 +91,11 @@ export const TableStats = ({
                           .{new Date(date).getUTCFullYear()}
                         </Text>
                         <Text>
-                          {category === "transport"
-                            ? "Транспорт"
-                            : category === "products"
-                              ? "Продукти"
-                              : category === "health"
-                                ? "Здоров’я"
-                                : category === "alcohole"
-                                  ? "Алкоголь"
-                                  : category === "entertaining"
-                                    ? "Розваги"
-                                    : category === "home"
-                                      ? "Все для дому"
-                                      : category === "technic"
-                                        ? "Техніка"
-                                        : category === "connection"
-                                          ? "Комуналка, зв’язок"
-                                          : category === "sport"
-                                            ? "Спорт, хобі"
-                                            : category === "education"
-                                              ? "Навчання"
-                                              : category === "other"
-                                                ? "Інше"
-                                                : category === "salary"
-                                                  ? "ЗП"
-                                                  : category === "addition"
-                                                    ? "Дод. прибуток"
-                                                    : ""}
+                          {
+                            CATEGORY_LABELS[
+                              category as keyof typeof CATEGORY_LABELS
+                            ]
+                          }
                         </Text>
                       </Texts>
                     </div>
@@ -138,7 +110,7 @@ export const TableStats = ({
                                 : "",
                         }}
                       >
-                        {type + " "}
+                        {type === "-" ? "- " : ""}
                         {new Intl.NumberFormat("en-US", {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2,
@@ -148,7 +120,9 @@ export const TableStats = ({
                         {" грн."}
                       </Sum>
                       <Btn
-                        onClick={handleDelete}
+                        onClick={(e) => {
+                          handleDelete(e, id, amount);
+                        }}
                         id={id}
                         data-action="delete"
                         type="button"
@@ -236,7 +210,7 @@ export const TableStats = ({
                                 : "",
                         }}
                       >
-                        {type + " "}
+                        {type === "-" ? "- " : ""}
                         {new Intl.NumberFormat("en-US", {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2,
@@ -247,7 +221,9 @@ export const TableStats = ({
                       </SumDesc>
                       <Data>
                         <Btn
-                          onClick={handleDelete}
+                          onClick={(e) => {
+                            handleDelete(e, id, amount);
+                          }}
                           id={id}
                           data-action="delete"
                           type="button"

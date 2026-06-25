@@ -45,6 +45,7 @@ import { Header } from "../../components/Header/Header";
 import { useEffect, useState } from "react";
 import { Formik } from "formik";
 import { Button } from "../../components/Button/Button";
+import { CATEGORY_LABELS } from "../../constants/categories";
 
 interface FormValues {
   desc: string;
@@ -81,6 +82,7 @@ const HomePage = ({
 }: any) => {
   const dispatch = useAppDispatch();
   const location = useLocation();
+  const isIncome = location.pathname.includes("getMoney");
   const balance = useAppSelector(selectBalance);
   const [modal, setModal] = useState<boolean>(false);
   const [list, setList] = useState<boolean>(false);
@@ -104,17 +106,22 @@ const HomePage = ({
         isOpen={isOpenD}
         closeModal={closeModalD}
         title="Ви впевнені?"
-        action={() => {
-          dispatch(
-            updateBalance(
-              location.pathname === "/getMoney"
-                ? balance - deletedElementAmount
-                : location.pathname === "/spendMoney"
-                  ? balance + deletedElementAmount
-                  : 0,
-            ),
-          );
-          dispatch(deleteMoney(deletedElementId));
+        action={async () => {
+          try {
+            await dispatch(
+              updateBalance(
+                location.pathname === "/getMoney"
+                  ? balance - deletedElementAmount
+                  : location.pathname === "/spendMoney"
+                    ? balance + deletedElementAmount
+                    : 0,
+              ),
+            ).unwrap();
+            await dispatch(deleteMoney(deletedElementId)).unwrap();
+            closeModalD();
+          } catch (error) {
+            console.log(error);
+          }
         }}
       />
       <GreyBg></GreyBg>
@@ -200,7 +207,7 @@ const HomePage = ({
                         name="desc"
                         onChange={handleChange}
                         value={values.desc}
-                        placeholder="Опис товару"
+                        placeholder={isIncome ? "Опис прибутку" : "Опис товару"}
                       />
                     </label>
                     <WrapperInput>
@@ -211,37 +218,13 @@ const HomePage = ({
                           }}
                           type="button"
                         >
-                          {values.category === "transport"
-                            ? "Транспорт"
-                            : values.category === "products"
-                              ? "Продукти"
-                              : values.category === "health"
-                                ? "Здоров’я"
-                                : values.category === "alcohole"
-                                  ? "Алкоголь"
-                                  : values.category === "entertaining"
-                                    ? "Розваги"
-                                    : values.category === "home"
-                                      ? "Все для дому"
-                                      : values.category === "technic"
-                                        ? "Техніка"
-                                        : values.category === "connection"
-                                          ? "Комуналка, зв’язок"
-                                          : values.category === "sport"
-                                            ? "Спорт, хобі"
-                                            : values.category === "education"
-                                              ? "Навчання"
-                                              : values.category === "other"
-                                                ? "Інше"
-                                                : values.category === "salary"
-                                                  ? "ЗП"
-                                                  : values.category ===
-                                                      "addition"
-                                                    ? "Дод. прибуток"
-                                                    : values.category ===
-                                                        "default"
-                                                      ? "Категорія товару"
-                                                      : ""}
+                          {values.category === "default"
+                            ? isIncome
+                              ? "Категорія прибутку"
+                              : "Категорія товару"
+                            : CATEGORY_LABELS[
+                                values.category as keyof typeof CATEGORY_LABELS
+                              ]}
                           <ArrowDown width="18" height="10">
                             <use href="#arrow"></use>
                           </ArrowDown>

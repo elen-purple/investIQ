@@ -1,0 +1,15 @@
+export const CATEGORY_LABELS = {
+  transport: "Транспорт",
+  products: "Продукти",
+  health: "Здоров'я",
+  alcohole: "Алкоголь",
+  entertaining: "Розваги",
+  home: "Все для дому",
+  technic: "Техніка",
+  connection: "Комуналка, зв’язок",
+  sport: "Спорт, хобі",
+  education: "Навчання",
+  other: "Інше",
+  salary: "ЗП",
+  addition: "Дод. прибуток",
+};
