@@ -94,6 +94,7 @@ const userSlice = createSlice({
       .addCase(logOut.fulfilled, (state) => {
         state.user = null;
         state.isAuth = false;
+        state.userId = null;
       })
       .addCase(logOut.rejected, (state) => {
         state.user = null;

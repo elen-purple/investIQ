@@ -1,8 +1,9 @@
 import { Formik } from "formik";
+import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { Button } from "../Button/Button";
 import { selectBalance } from "../../redux/balance/selectors";
-import { Form, Input, Subtitle, Wrapper } from "./BalanceStyled";
+import { ErrorMessage, Form, Input, Subtitle, Wrapper } from "./BalanceStyled";
 import { addTransactionWithBalance } from "../../redux/services/operations";
 
 interface FormValues {
@@ -38,6 +39,7 @@ const formatBalance = (value: number) =>
 export const Balance = () => {
   const dispatch = useAppDispatch();
   const balance = useAppSelector(selectBalance);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   return (
     <Formik
@@ -61,18 +63,25 @@ export const Balance = () => {
 
         const difference = parsedBalance - balance;
         if (difference === 0) {
+          setSubmitError(null);
           setFieldValue("balance", formatBalance(parsedBalance));
           return;
         }
-        await dispatch(
-          addTransactionWithBalance({
-            desc: "Зміна балансу",
-            amount: Math.abs(difference),
-            category: "other",
-            type: difference > 0 ? "+" : difference < 0 ? "-" : "",
-          }),
-        );
-        setFieldValue("balance", formatBalance(parsedBalance));
+
+        try {
+          setSubmitError(null);
+          await dispatch(
+            addTransactionWithBalance({
+              desc: "Зміна балансу",
+              amount: Math.abs(difference),
+              category: "other",
+              type: difference > 0 ? "+" : "-",
+            }),
+          ).unwrap();
+          setFieldValue("balance", formatBalance(parsedBalance));
+        } catch {
+          setSubmitError("Не вдалося оновити баланс. Спробуйте ще раз.");
+        }
       }}
     >
       {({ values, handleChange, handleSubmit, setFieldValue }) => (
@@ -103,6 +112,7 @@ export const Balance = () => {
               type="submit"
             />
           </Wrapper>
+          {submitError ? <ErrorMessage>{submitError}</ErrorMessage> : null}
         </Form>
       )}
     </Formik>

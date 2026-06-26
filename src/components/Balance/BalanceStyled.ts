@@ -47,3 +47,9 @@ export const Input = styled.input`
   font-family: "Roboto", sans-serif;
   border: 2px solid ${({ theme }) => theme.colors.primaryBg};
 `;
+
+export const ErrorMessage = styled.p`
+  font-size: 12px;
+  color: ${({ theme }) => theme.colors.errorColor};
+  text-align: center;
+`;
