@@ -21,7 +21,7 @@ import {
 import two from "../../imgs/tablet/tablet-two.png";
 import top from "../../imgs/desktop/desktop-top.png";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { deleteTransactionWithBalance } from "../../redux/services/operations";
 
 interface HomePageProps {
