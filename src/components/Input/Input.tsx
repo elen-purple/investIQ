@@ -34,4 +34,3 @@ export const Input = ({
     </Label>
   );
 };
-9;

@@ -159,7 +159,7 @@ export const TableStats = ({
                     } else if (location.pathname === "/spendMoney") {
                       return type === "-";
                     } else {
-                      return;
+                      return false;
                     }
                   })
                   .sort(
