@@ -298,7 +298,13 @@ export const Entering = ({
                 handleSumbitEntry(values, resetForm)
               }
             >
-              {({ values, handleChange, handleSubmit, resetForm }) => (
+              {({
+                values,
+                handleChange,
+                handleSubmit,
+                resetForm,
+                setFieldValue,
+              }) => (
                 <FormStyled onSubmit={handleSubmit}>
                   <InputsWrapper>
                     <DateWrapper style={{ margin: 0, justifyContent: "left" }}>
@@ -348,7 +354,7 @@ export const Entering = ({
                                 <li key={id} id={id}>
                                   <BtnItem
                                     onClick={() => {
-                                      values.category = id;
+                                      setFieldValue("category", id);
                                       setList(false);
                                     }}
                                     type="button"
