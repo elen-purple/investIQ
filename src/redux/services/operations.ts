@@ -90,11 +90,12 @@ interface DeleteTransactionPayload {
 
 export const deleteTransactionWithBalance = createAsyncThunk<
   { itemId: string; newBalance: number },
-  DeleteTransactionPayload
+  DeleteTransactionPayload,
+  { state: RootState }
 >(
   "money/deleteTransactionWithBalance",
   async ({ itemId, amount, type }, thunkAPI) => {
-    const state: any = thunkAPI.getState();
+    const state = thunkAPI.getState();
     const userId = state.user?.userId;
 
     if (!userId) return thunkAPI.rejectWithValue("Користувач не авторизований");

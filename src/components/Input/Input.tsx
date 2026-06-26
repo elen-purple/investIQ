@@ -1,11 +1,12 @@
+import type { ChangeEventHandler, HTMLInputTypeAttribute } from "react";
 import { Error, InputStyled, Label, Text } from "./InputStyled";
 
 interface InputProps {
-  handleChange: any;
+  handleChange: ChangeEventHandler<HTMLInputElement>;
   values: string;
-  errors: string | undefined;
-  touched: any | undefined;
-  type: string;
+  errors: string | null | undefined;
+  touched: boolean | undefined;
+  type: HTMLInputTypeAttribute;
   placeholder: string;
   label: string;
 }
@@ -33,3 +34,4 @@ export const Input = ({
     </Label>
   );
 };
+9;

@@ -18,8 +18,14 @@ import {
 } from "redux-persist";
 import { moneyReducer } from "./money/slice";
 import { balanceReducer } from "./balance/slice";
+import type { WebStorage } from "redux-persist/es/types";
 
-const persistStorage = (storage as any).default || storage;
+type StorageImport = WebStorage | { default: WebStorage };
+
+const storageModule = storage as unknown as StorageImport;
+const persistStorage =
+  "getItem" in storageModule ? storageModule : storageModule.default;
+
 const persistConfig = {
   key: "root",
   storage: persistStorage,
