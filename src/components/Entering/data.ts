@@ -1,32 +1,17 @@
-interface Text {
-  id:
-    | "transport"
-    | "products"
-    | "health"
-    | "alcohole"
-    | "entertaining"
-    | "home"
-    | "technic"
-    | "connection"
-    | "sport"
-    | "education"
-    | "other"
-    | "salary"
-    | "addition";
+import {
+  EXPENSE_CATEGORY_IDS,
+  INCOME_CATEGORY_IDS,
+  type CategoryId,
+} from "../../constants/categories";
+
+interface CategoryOption {
+  id: CategoryId;
 }
 
-export const dataS: Text[] = [
-  { id: "transport" },
-  { id: "products" },
-  { id: "health" },
-  { id: "alcohole" },
-  { id: "entertaining" },
-  { id: "home" },
-  { id: "technic" },
-  { id: "connection" },
-  { id: "sport" },
-  { id: "education" },
-  { id: "other" },
-];
+export const dataS: CategoryOption[] = EXPENSE_CATEGORY_IDS.map((id) => ({
+  id,
+}));
 
-export const dataG: Text[] = [{ id: "salary" }, { id: "addition" }];
+export const dataG: CategoryOption[] = INCOME_CATEGORY_IDS.map((id) => ({
+  id,
+}));

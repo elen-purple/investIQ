@@ -4,6 +4,7 @@ import {
   addTransactionWithBalance,
   deleteTransactionWithBalance,
 } from "../services/operations";
+import { logOut } from "../user/operations";
 
 interface Balance {
   value: number;
@@ -45,6 +46,7 @@ const balanceSlice = createSlice({
       .addCase(addTransactionWithBalance.fulfilled, (state, action) => {
         state.value = action.payload.newBalance;
         state.isLoaded = true;
+        state.error = null;
       })
       .addCase(addTransactionWithBalance.rejected, (state, action) => {
         state.error =
@@ -55,13 +57,15 @@ const balanceSlice = createSlice({
       .addCase(deleteTransactionWithBalance.fulfilled, (state, action) => {
         state.value = action.payload.newBalance;
         state.isLoaded = true;
+        state.error = null;
       })
       .addCase(deleteTransactionWithBalance.rejected, (state, action) => {
         state.error =
           typeof action.payload === "string"
             ? action.payload
             : (action.error.message ?? null);
-      }),
+      })
+      .addCase(logOut.fulfilled, () => initialState),
 });
 
 export const balanceReducer = balanceSlice.reducer;

@@ -3,11 +3,12 @@ import { db } from "../../services/firebase";
 import { doc, collection, runTransaction } from "firebase/firestore";
 import type { RootState } from "../store";
 import type { MoneyEntry, TransactionType } from "../../types/transactions";
+import type { CategoryId } from "../../constants/categories";
 
 interface AddTransactionPayload {
   desc: string;
   amount: number;
-  category: string;
+  category: CategoryId;
   type: TransactionType;
 }
 

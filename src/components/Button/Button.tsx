@@ -7,9 +7,17 @@ interface ButtonProps {
   label: string;
   onClick?: () => void;
   type: "button" | "submit";
+  disabled?: boolean;
 }
 
-export const Button = ({ bg, shading, label, onClick, type }: ButtonProps) => {
+export const Button = ({
+  bg,
+  shading,
+  label,
+  onClick,
+  type,
+  disabled = false,
+}: ButtonProps) => {
   const theme = useTheme();
 
   const backgroundColor =
@@ -55,6 +63,7 @@ export const Button = ({ bg, shading, label, onClick, type }: ButtonProps) => {
       style={{ backgroundColor, border, color, boxShadow }}
       type={type}
       onClick={onClick}
+      disabled={disabled}
     >
       {label}
     </Btn>

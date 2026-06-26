@@ -21,6 +21,8 @@ import {
   Wrapper,
 } from "./TableStatsStyled";
 import { getCategoryLabel } from "../../constants/categories";
+import { getTransactionType } from "../../utils/routes";
+import { formatDate } from "../../utils/date";
 
 interface TableStatsProps {
   setDeletedElementId: React.Dispatch<React.SetStateAction<string | null>>;
@@ -43,6 +45,7 @@ export const TableStats = ({
   }, []);
 
   const location = useLocation();
+  const transactionType = getTransactionType(location.pathname);
   const notes = useAppSelector((state) => selectNotes(state.money));
   const isLoading = useAppSelector((state) => selectIsLoading(state.money));
 
@@ -71,13 +74,7 @@ export const TableStats = ({
                   if (!note) return false;
                   const { type } = note;
 
-                  if (location.pathname === "/getMoney") {
-                    return type === "+";
-                  } else if (location.pathname === "/spendMoney") {
-                    return type === "-";
-                  } else {
-                    return false;
-                  }
+                  return transactionType !== null && type === transactionType;
                 })
                 .sort(
                   (
@@ -94,14 +91,7 @@ export const TableStats = ({
                     <div>
                       <Title>{desc}</Title>
                       <Texts>
-                        <Text>
-                          {new Date(date).getDate().toString().padStart(2, "0")}
-                          .
-                          {(new Date(date).getMonth() + 1)
-                            .toString()
-                            .padStart(2, "0")}
-                          .{new Date(date).getUTCFullYear()}
-                        </Text>
+                        <Text>{formatDate(new Date(date))}</Text>
                         <Text>{getCategoryLabel(category)}</Text>
                       </Texts>
                     </div>
@@ -153,14 +143,8 @@ export const TableStats = ({
               </thead>
               <BodyStyled>
                 {notes
-                  ?.filter(({ type }: { type: "+" | "-" | "" }) => {
-                    if (location.pathname === "/getMoney") {
-                      return type === "+";
-                    } else if (location.pathname === "/spendMoney") {
-                      return type === "-";
-                    } else {
-                      return false;
-                    }
+                  ?.filter(({ type }) => {
+                    return transactionType !== null && type === transactionType;
                   })
                   .sort(
                     (
@@ -174,13 +158,7 @@ export const TableStats = ({
                   )
                   .map(({ desc, id, amount, category, date, type }) => (
                     <Row key={id}>
-                      <NameStyled>
-                        {new Date(date).getDate().toString().padStart(2, "0")}.
-                        {(new Date(date).getMonth() + 1)
-                          .toString()
-                          .padStart(2, "0")}
-                        .{new Date(date).getUTCFullYear()}
-                      </NameStyled>
+                      <NameStyled>{formatDate(new Date(date))}</NameStyled>
                       <NameStyled>{desc}</NameStyled>
                       <NameStyled>{getCategoryLabel(category)}</NameStyled>
                       <SumDesc

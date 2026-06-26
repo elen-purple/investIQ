@@ -13,6 +13,8 @@ import {
 } from "./CategoryStatsStyled";
 import { dataS, dataG } from "../Entering/data";
 import { getCategoryLabel } from "../../constants/categories";
+import type { CategoryId } from "../../constants/categories";
+import { getDefaultCategory, getTransactionType } from "../../utils/routes";
 
 interface Month {
   year: number;
@@ -21,8 +23,8 @@ interface Month {
 
 interface CategoriesStatesProps {
   currentDate: Month;
-  currentCategory: string;
-  setCurrentCategory: React.Dispatch<React.SetStateAction<string>>;
+  currentCategory: CategoryId | null;
+  setCurrentCategory: React.Dispatch<React.SetStateAction<CategoryId | null>>;
 }
 
 export const CategoryStats = ({
@@ -32,27 +34,16 @@ export const CategoryStats = ({
 }: CategoriesStatesProps) => {
   const location = useLocation();
   const { pathname } = location;
+  const transactionType = getTransactionType(pathname);
   const notes = useAppSelector((state) => selectNotes(state.money));
 
   useEffect(() => {
-    setCurrentCategory(
-      pathname === "/categories/getMoney"
-        ? "salary"
-        : pathname === "/categories/spendMoney"
-          ? "transport"
-          : "",
-    );
+    setCurrentCategory(getDefaultCategory(pathname));
   }, [pathname, setCurrentCategory]);
 
   const array = notes
     .filter(({ type }) => {
-      if (pathname === "/categories/getMoney") {
-        return type === "+";
-      } else if (pathname === "/categories/spendMoney") {
-        return type === "-";
-      } else {
-        return false;
-      }
+      return transactionType !== null && type === transactionType;
     })
     .filter(({ date }: { date: string }) => {
       return (
@@ -61,16 +52,14 @@ export const CategoryStats = ({
       );
     });
 
-  const getSum = (myCategory: string) => {
+  const getSum = (myCategory: CategoryId) => {
     return new Intl.NumberFormat("en-US", {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     })
       .format(
         array
-          .filter(
-            ({ category }: { category: string }) => category === myCategory,
-          )
+          .filter(({ category }) => category === myCategory)
           .reduce(
             (sum: number, { amount }: { amount: number }) => sum + amount,
             0,
@@ -81,22 +70,22 @@ export const CategoryStats = ({
 
   return (
     <List>
-      {pathname === "/categories/getMoney" ? (
+      {transactionType === "+" ? (
         <>
-          {dataG.map(({ id }: { id: string }) => (
+          {dataG.map(({ id }) => (
             <li key={id}>
-              <Btn onClick={() => setCurrentCategory(`${id}`)}>
-                <Sum>{getSum(`${id}`)}</Sum>
+              <Btn onClick={() => setCurrentCategory(id)}>
+                <Sum>{getSum(id)}</Sum>
                 <Wrapper>
                   <Block
                     style={{
                       backgroundColor:
-                        currentCategory === `${id}` ? "#FFDAC0" : "#F5F6FB",
+                        currentCategory === id ? "#FFDAC0" : "#F5F6FB",
                     }}
                   ></Block>
                   <Icon
                     style={{
-                      fill: currentCategory === `${id}` ? "#FF751D" : "#071F41",
+                      fill: currentCategory === id ? "#FF751D" : "#071F41",
                     }}
                     width="56"
                     height="56"
@@ -109,22 +98,22 @@ export const CategoryStats = ({
             </li>
           ))}
         </>
-      ) : pathname === "/categories/spendMoney" ? (
+      ) : transactionType === "-" ? (
         <>
-          {dataS.map(({ id }: { id: string }) => (
+          {dataS.map(({ id }) => (
             <li key={id}>
-              <Btn onClick={() => setCurrentCategory(`${id}`)}>
-                <Sum>{getSum(`${id}`)}</Sum>
+              <Btn onClick={() => setCurrentCategory(id)}>
+                <Sum>{getSum(id)}</Sum>
                 <Wrapper>
                   <Block
                     style={{
                       backgroundColor:
-                        currentCategory === `${id}` ? "#FFDAC0" : "#F5F6FB",
+                        currentCategory === id ? "#FFDAC0" : "#F5F6FB",
                     }}
                   ></Block>
                   <Icon
                     style={{
-                      fill: currentCategory === `${id}` ? "#FF751D" : "#071F41",
+                      fill: currentCategory === id ? "#FF751D" : "#071F41",
                     }}
                     width="56"
                     height="56"

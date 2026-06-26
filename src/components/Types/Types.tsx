@@ -1,9 +1,10 @@
 import { NavLink, useLocation } from "react-router-dom";
 import { Arrow, Slider, Text } from "./TypesStyled";
+import { getTransactionSection } from "../../utils/routes";
 
 export const Types = () => {
   const location = useLocation();
-  const type = location.pathname.split("/")[2];
+  const type = getTransactionSection(location.pathname);
 
   const targetType =
     type === "getMoney"

@@ -2,9 +2,11 @@ import { useLocation } from "react-router-dom";
 import { useAppSelector } from "../../redux/store";
 import { selectIsLoading, selectNotes } from "../../redux/money/selectors";
 import { Item, Month, Sum, Title, Wrapper } from "./ReductionStyled";
+import { getTransactionType } from "../../utils/routes";
 
 export const Reduction = () => {
   const location = useLocation();
+  const transactionType = getTransactionType(location.pathname);
   const notes = useAppSelector((state) => selectNotes(state.money));
   const isLoading = useAppSelector((state) => selectIsLoading(state.money));
   const now = new Date();
@@ -27,13 +29,7 @@ export const Reduction = () => {
           if (!note) return false;
           const { type } = note;
 
-          if (location.pathname === "/getMoney") {
-            return type === "+";
-          } else if (location.pathname === "/spendMoney") {
-            return type === "-";
-          } else {
-            return false;
-          }
+          return transactionType !== null && type === transactionType;
         })
         .filter(({ date }: { date: string }) => {
           return (

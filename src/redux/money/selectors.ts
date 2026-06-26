@@ -2,7 +2,20 @@ interface Note {
   id: string;
   desc: string;
   date: string;
-  category: string;
+  category:
+    | "transport"
+    | "products"
+    | "health"
+    | "alcohole"
+    | "entertaining"
+    | "home"
+    | "technic"
+    | "connection"
+    | "sport"
+    | "education"
+    | "other"
+    | "salary"
+    | "addition";
   amount: number;
   type: "+" | "-" | "";
 }

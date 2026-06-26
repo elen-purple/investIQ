@@ -1,19 +1,12 @@
 import { useLocation } from "react-router-dom";
 import { deleteTransactionWithBalance } from "../redux/services/operations";
 import { useAppDispatch } from "../redux/store";
-import type { TransactionType } from "../types/transactions";
+import { getTransactionType } from "../utils/routes";
 
 interface UseDeleteTransactionProps {
   deletedElementId: string | null;
   deletedElementAmount: number | null;
 }
-
-const getTransactionType = (pathname: string): TransactionType | null => {
-  if (pathname === "/getMoney") return "+";
-  if (pathname === "/spendMoney") return "-";
-
-  return null;
-};
 
 export const useDeleteTransaction = ({
   deletedElementId,

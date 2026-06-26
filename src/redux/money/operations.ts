@@ -3,6 +3,7 @@ import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "../../services/firebase";
 import type { RootState } from "../store";
 import { isTransactionType, type MoneyEntry } from "../../types/transactions";
+import { isCategoryId } from "../../constants/categories";
 
 export const fetchMoney = createAsyncThunk<
   MoneyEntry[],
@@ -20,7 +21,7 @@ export const fetchMoney = createAsyncThunk<
     querySnapshot.forEach((doc) => {
       const data = doc.data();
 
-      if (!isTransactionType(data.type)) return;
+      if (!isTransactionType(data.type) || !isCategoryId(data.category)) return;
 
       items.push({
         id: doc.id,

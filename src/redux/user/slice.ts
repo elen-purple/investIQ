@@ -95,10 +95,20 @@ const userSlice = createSlice({
         state.user = null;
         state.isAuth = false;
         state.userId = null;
+        state.isLoading = false;
+        state.errorL = null;
+        state.errorR = null;
       })
-      .addCase(logOut.rejected, (state) => {
-        state.user = null;
+      .addCase(logOut.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(logOut.rejected, (state, action) => {
         state.isAuth = true;
+        state.isLoading = false;
+        state.errorL =
+          typeof action.payload === "string"
+            ? action.payload
+            : (action.error.message ?? null);
       }),
 });
 

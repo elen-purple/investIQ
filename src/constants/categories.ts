@@ -1,4 +1,4 @@
-const CATEGORY_LABELS = {
+export const CATEGORY_LABELS = {
   transport: "Транспорт",
   products: "Продукти",
   health: "Здоров'я",
@@ -12,8 +12,33 @@ const CATEGORY_LABELS = {
   other: "Інше",
   salary: "ЗП",
   addition: "Дод. прибуток",
+} as const;
+
+export type CategoryId = keyof typeof CATEGORY_LABELS;
+
+export const EXPENSE_CATEGORY_IDS = [
+  "transport",
+  "products",
+  "health",
+  "alcohole",
+  "entertaining",
+  "home",
+  "technic",
+  "connection",
+  "sport",
+  "education",
+  "other",
+] as const satisfies readonly CategoryId[];
+
+export const INCOME_CATEGORY_IDS = [
+  "salary",
+  "addition",
+] as const satisfies readonly CategoryId[];
+
+export const isCategoryId = (value: unknown): value is CategoryId => {
+  return typeof value === "string" && value in CATEGORY_LABELS;
 };
 
-export const getCategoryLabel = (category: string) => {
-  return CATEGORY_LABELS[category as keyof typeof CATEGORY_LABELS] ?? category;
+export const getCategoryLabel = (category: CategoryId) => {
+  return CATEGORY_LABELS[category];
 };

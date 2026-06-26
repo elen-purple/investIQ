@@ -84,7 +84,13 @@ export const Balance = () => {
         }
       }}
     >
-      {({ values, handleChange, handleSubmit, setFieldValue }) => (
+      {({
+        values,
+        handleChange,
+        handleSubmit,
+        setFieldValue,
+        isSubmitting,
+      }) => (
         <Form onSubmit={handleSubmit}>
           <Subtitle>Баланс:</Subtitle>
           <Wrapper>
@@ -103,6 +109,7 @@ export const Balance = () => {
                 }}
                 value={values.balance}
                 placeholder="0.00 UAH"
+                disabled={isSubmitting}
               />
             </label>
             <Button
@@ -110,6 +117,7 @@ export const Balance = () => {
               shading={false}
               label="Підтвердити"
               type="submit"
+              disabled={isSubmitting}
             />
           </Wrapper>
           {submitError ? <ErrorMessage>{submitError}</ErrorMessage> : null}

@@ -1,3 +1,5 @@
+import type { CategoryId } from "../constants/categories";
+
 export type TransactionType = "+" | "-";
 
 export interface MoneyEntry {
@@ -5,7 +7,7 @@ export interface MoneyEntry {
   desc: string;
   amount: number;
   date: string;
-  category: string;
+  category: CategoryId;
   type: TransactionType;
 }
 

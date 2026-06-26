@@ -14,6 +14,8 @@ import { useAppSelector } from "../../redux/store";
 import { selectNotes } from "../../redux/money/selectors";
 import { useLocation } from "react-router-dom";
 import { Text, Wrapper } from "./ChartStyled";
+import { getTransactionType } from "../../utils/routes";
+import type { CategoryId } from "../../constants/categories";
 
 ChartJS.register(
   CategoryScale,
@@ -30,7 +32,7 @@ interface Month {
 }
 
 interface ExpensesChartProps {
-  currentCategory: string;
+  currentCategory: CategoryId | null;
   currentDate: Month;
 }
 
@@ -40,6 +42,7 @@ export const ExpensesChart = ({
 }: ExpensesChartProps) => {
   const notes = useAppSelector((state) => selectNotes(state.money));
   const location = useLocation();
+  const transactionType = getTransactionType(location.pathname);
 
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 703);
 
@@ -53,13 +56,7 @@ export const ExpensesChart = ({
 
   const array = notes
     .filter(({ type }) => {
-      if (location.pathname === "/categories/getMoney") {
-        return type === "+";
-      } else if (location.pathname === "/categories/spendMoney") {
-        return type === "-";
-      } else {
-        return false;
-      }
+      return transactionType !== null && type === transactionType;
     })
     .filter(({ date }: { date: string }) => {
       return (
@@ -67,7 +64,7 @@ export const ExpensesChart = ({
         new Date(date).getFullYear() === currentDate?.year
       );
     })
-    .filter(({ category }: { category: string }) => {
+    .filter(({ category }) => {
       return category === currentCategory;
     })
     .sort(

@@ -33,13 +33,18 @@ import {
 import { addTransactionWithBalance } from "../../redux/services/operations";
 import { Header } from "../Header/Header";
 import { Container } from "../Container/Container";
-import { getCategoryLabel } from "../../constants/categories";
-import type { TransactionType } from "../../types/transactions";
+import {
+  getCategoryLabel,
+  isCategoryId,
+  type CategoryId,
+} from "../../constants/categories";
+import { getTransactionType } from "../../utils/routes";
+import { formatDate } from "../../utils/date";
 
 interface FormValues {
   desc: string;
   amount: string;
-  category: string;
+  category: CategoryId | "default";
 }
 
 interface FormErrors {
@@ -63,13 +68,11 @@ export const Entering = ({
 }: EnteringProps) => {
   const dispatch = useAppDispatch();
   const location = useLocation();
-  const isIncome = location.pathname.includes("getMoney");
-  const transactionType: TransactionType | null =
-    location.pathname === "/getMoney"
-      ? "+"
-      : location.pathname === "/spendMoney"
-        ? "-"
-        : null;
+  const transactionType = getTransactionType(location.pathname);
+  const isIncome = transactionType === "+";
+  const data =
+    transactionType === "+" ? dataG : transactionType === "-" ? dataS : [];
+  const today = formatDate(new Date());
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 703);
   const [list, setList] = useState<boolean>(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -80,13 +83,6 @@ export const Entering = ({
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-  let data: { id: string }[];
-  if (location.pathname === "/spendMoney") {
-    data = dataS;
-  } else if (location.pathname === "/getMoney") {
-    data = dataG;
-  }
-
   const handleHelper = (value: string): number | null => {
     const normalized = value.trim().replace(",", ".");
 
@@ -127,6 +123,10 @@ export const Entering = ({
       setSubmitError(
         "Невідомий тип операції. Спробуйте відкрити сторінку заново.",
       );
+      return;
+    }
+    if (!isCategoryId(values.category)) {
+      setSubmitError("Оберіть категорію операції.");
       return;
     }
 
@@ -186,6 +186,7 @@ export const Entering = ({
                       handleSubmit,
                       resetForm,
                       setFieldValue,
+                      isSubmitting,
                     }) => (
                       <form onSubmit={handleSubmit}>
                         <label>
@@ -258,16 +259,17 @@ export const Entering = ({
                             shading={true}
                             label="Ввести"
                             type="submit"
+                            disabled={isSubmitting}
                           />
                           <Button
                             bg="grey"
                             shading={true}
                             onClick={() => {
                               resetForm();
-                              values.category = "default";
                             }}
                             label="Очистити"
                             type="button"
+                            disabled={isSubmitting}
                           />
                         </WrapperBtn>
                       </form>
@@ -288,11 +290,7 @@ export const Entering = ({
                 <DateIcon width="20" height="20">
                   <use href="#calendar"></use>
                 </DateIcon>
-                <DateText>
-                  {new Date().getDate().toString().padStart(2, "0")}.
-                  {(new Date().getMonth() + 1).toString().padStart(2, "0")}.
-                  {new Date().getUTCFullYear()}
-                </DateText>
+                <DateText>{today}</DateText>
               </DateWrapper>
               <ButtonWrapper>
                 <Button
@@ -320,6 +318,7 @@ export const Entering = ({
                 handleSubmit,
                 resetForm,
                 setFieldValue,
+                isSubmitting,
               }) => (
                 <FormStyled onSubmit={handleSubmit}>
                   <InputsWrapper>
@@ -327,13 +326,7 @@ export const Entering = ({
                       <DateIcon width="20" height="20">
                         <use href="#calendar"></use>
                       </DateIcon>
-                      <DateText>
-                        {new Date().getDate().toString().padStart(2, "0")}.
-                        {(new Date().getMonth() + 1)
-                          .toString()
-                          .padStart(2, "0")}
-                        .{new Date().getUTCFullYear()}
-                      </DateText>
+                      <DateText>{today}</DateText>
                     </DateWrapper>
                     <InputsOnlyWrapper>
                       <Label>
@@ -408,16 +401,17 @@ export const Entering = ({
                       shading={false}
                       label="Ввести"
                       type="submit"
+                      disabled={isSubmitting}
                     />
                     <Button
                       bg="white"
                       shading={false}
                       onClick={() => {
                         resetForm();
-                        values.category = "default";
                       }}
                       label="Очистити"
                       type="button"
+                      disabled={isSubmitting}
                     />
                   </WrapperBtn>
                 </FormStyled>

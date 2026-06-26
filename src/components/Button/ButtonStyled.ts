@@ -8,4 +8,9 @@ export const Btn = styled.button`
   padding: 13px 0;
   border-radius: 16px;
   width: 125px;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
 `;

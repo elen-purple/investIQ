@@ -22,6 +22,8 @@ import {
 } from "./CategoriesStyled";
 import two from "../../imgs/tablet/tablet-two.png";
 import top from "../../imgs/desktop/desktop-top.png";
+import { getDefaultCategory } from "../../utils/routes";
+import type { CategoryId } from "../../constants/categories";
 
 export const Categories = () => {
   const location = useLocation();
@@ -70,12 +72,8 @@ export const Categories = () => {
 
   const currentDate = selectedDateIsAvailable ? selectedDate : defaultDate;
 
-  const [currentCategory, setCurrentCategory] = useState<string>(
-    location.pathname === "/categories/getMoney"
-      ? "salary"
-      : location.pathname === "/categories/spendMoney"
-        ? "transport"
-        : "",
+  const [currentCategory, setCurrentCategory] = useState<CategoryId | null>(
+    getDefaultCategory(location.pathname),
   );
 
   return (
