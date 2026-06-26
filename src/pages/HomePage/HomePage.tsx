@@ -1,7 +1,6 @@
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { Entering } from "../../components/Entering/Entering";
 import { Modal } from "../../components/Modal/Modal";
-import { useAppDispatch } from "../../redux/store";
 import { Navigation } from "../../components/Navigation/Navigation";
 import { Reduction } from "../../components/Reduction/Reduction";
 import { Notification } from "../../components/Notification/Notification";
@@ -22,7 +21,7 @@ import two from "../../imgs/tablet/tablet-two.png";
 import top from "../../imgs/desktop/desktop-top.png";
 
 import { useState } from "react";
-import { deleteTransactionWithBalance } from "../../redux/services/operations";
+import { useDeleteTransaction } from "../../hooks/useDeleteTransaction";
 
 interface HomePageProps {
   isOpenD: boolean;
@@ -39,31 +38,12 @@ const HomePage = ({
   deletedElementAmount,
   openModalL,
 }: HomePageProps) => {
-  const dispatch = useAppDispatch();
-  const location = useLocation();
   const [modal, setModal] = useState<boolean>(false);
+  const handleDelete = useDeleteTransaction({
+    deletedElementId,
+    deletedElementAmount,
+  });
 
-  const handleDelete = async () => {
-    const transactionType = (
-      location.pathname === "/getMoney"
-        ? "+"
-        : location.pathname === "/spendMoney"
-          ? "-"
-          : "+"
-    ) as "+" | "-";
-    if (!deletedElementId || deletedElementAmount === null) {
-      throw new Error("Немає даних для видалення");
-    }
-
-    await dispatch(
-      deleteTransactionWithBalance({
-        itemId: typeof deletedElementId === "string" ? deletedElementId : "",
-        amount:
-          typeof deletedElementAmount === "number" ? deletedElementAmount : 0,
-        type: transactionType,
-      }),
-    ).unwrap();
-  };
   return (
     <Section>
       <Modal
