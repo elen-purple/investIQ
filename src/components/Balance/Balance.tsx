@@ -13,6 +13,28 @@ interface FormErrors {
   balance?: string;
 }
 
+const parseMoneyInput = (value: string): number | null => {
+  const normalized = value
+    .replace(/\s/g, "")
+    .replace(/UAH$/i, "")
+    .replace(",", ".");
+
+  if (!/^\d+(\.\d{1,2})?$/.test(normalized)) {
+    return null;
+  }
+
+  const parsed = Number(normalized);
+  return Number.isFinite(parsed) ? parsed : null;
+};
+
+const formatBalance = (value: number) =>
+  `${new Intl.NumberFormat("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })
+    .format(value)
+    .replace(/,/g, " ")} UAH`;
+
 export const Balance = () => {
   const dispatch = useAppDispatch();
   const balance = useAppSelector(selectBalance);
@@ -21,40 +43,25 @@ export const Balance = () => {
     <Formik
       enableReinitialize
       initialValues={{
-        balance:
-          new Intl.NumberFormat("en-US", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })
-            .format(Number.parseFloat(balance.toString()))
-            .replace(/,/g, " ") + " UAH",
+        balance: formatBalance(balance),
       }}
       validate={(values: FormValues) => {
         const errors: FormErrors = {};
         if (!values.balance) {
           errors.balance = "Required";
-        } else if (
-          !(
-            Number.parseFloat(values.balance) === 0 ||
-            Number.parseFloat(values.balance)
-          )
-        ) {
+        } else if (parseMoneyInput(values.balance) === null) {
           errors.balance = "Balance must be a number";
         }
         return errors;
       }}
       onSubmit={async (values: FormValues, { setFieldValue }) => {
-        const difference = parseFloat(values.balance) - balance;
+        const parsedBalance = parseMoneyInput(values.balance);
+
+        if (parsedBalance === null) return;
+
+        const difference = parsedBalance - balance;
         if (difference === 0) {
-          setFieldValue(
-            "balance",
-            new Intl.NumberFormat("en-US", {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })
-              .format(Number.parseFloat(values.balance))
-              .replace(/,/g, " ") + " UAH",
-          );
+          setFieldValue("balance", formatBalance(parsedBalance));
           return;
         }
         await dispatch(
@@ -65,15 +72,7 @@ export const Balance = () => {
             type: difference > 0 ? "+" : difference < 0 ? "-" : "",
           }),
         );
-        setFieldValue(
-          "balance",
-          new Intl.NumberFormat("en-US", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })
-            .format(Number.parseFloat(values.balance))
-            .replace(/,/g, " ") + " UAH",
-        );
+        setFieldValue("balance", formatBalance(parsedBalance));
       }}
     >
       {({ values, handleChange, handleSubmit, setFieldValue }) => (
@@ -86,13 +85,12 @@ export const Balance = () => {
                 name="balance"
                 onChange={handleChange}
                 onFocus={(e) => {
-                  e.currentTarget.value = parseFloat(
-                    values.balance.replace(/\s/g, ""),
-                  ).toString();
-                  setFieldValue(
-                    "balance",
-                    parseFloat(values.balance.replace(/\s/g, "")).toString(),
-                  );
+                  const parsedBalance = parseMoneyInput(values.balance);
+
+                  if (parsedBalance === null) return;
+
+                  e.currentTarget.value = parsedBalance.toString();
+                  setFieldValue("balance", parsedBalance.toString());
                 }}
                 value={values.balance}
                 placeholder="0.00 UAH"
