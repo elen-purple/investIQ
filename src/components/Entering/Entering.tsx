@@ -34,6 +34,7 @@ import { addTransactionWithBalance } from "../../redux/services/operations";
 import { Header } from "../Header/Header";
 import { Container } from "../Container/Container";
 import { getCategoryLabel } from "../../constants/categories";
+import type { TransactionType } from "../../types/transactions";
 
 interface FormValues {
   desc: string;
@@ -63,6 +64,12 @@ export const Entering = ({
   const dispatch = useAppDispatch();
   const location = useLocation();
   const isIncome = location.pathname.includes("getMoney");
+  const transactionType: TransactionType | null =
+    location.pathname === "/getMoney"
+      ? "+"
+      : location.pathname === "/spendMoney"
+        ? "-"
+        : null;
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 703);
   const [list, setList] = useState<boolean>(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -116,6 +123,13 @@ export const Entering = ({
   ) => {
     const amount = handleHelper(values.amount);
     if (amount === null) return;
+    if (!transactionType) {
+      setSubmitError(
+        "Невідомий тип операції. Спробуйте відкрити сторінку заново.",
+      );
+      return;
+    }
+
     try {
       setSubmitError(null);
       await dispatch(
@@ -123,12 +137,7 @@ export const Entering = ({
           desc: values.desc,
           amount,
           category: values.category,
-          type:
-            location.pathname === "/getMoney"
-              ? "+"
-              : location.pathname === "/spendMoney"
-                ? "-"
-                : "",
+          type: transactionType,
         }),
       ).unwrap();
       resetForm();

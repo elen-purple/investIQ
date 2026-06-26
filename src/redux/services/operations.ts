@@ -2,24 +2,18 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { db } from "../../services/firebase";
 import { doc, collection, runTransaction } from "firebase/firestore";
 import type { RootState } from "../store";
+import type { MoneyEntry, TransactionType } from "../../types/transactions";
 
 interface AddTransactionPayload {
   desc: string;
   amount: number;
   category: string;
-  type: "+" | "-" | "";
+  type: TransactionType;
 }
 
 export const addTransactionWithBalance = createAsyncThunk<
   {
-    item: {
-      id: string;
-      desc: string;
-      amount: number;
-      date: string;
-      category: string;
-      type: "+" | "-" | "";
-    };
+    item: MoneyEntry;
     newBalance: number;
   },
   AddTransactionPayload,
@@ -85,7 +79,7 @@ export const addTransactionWithBalance = createAsyncThunk<
 interface DeleteTransactionPayload {
   itemId: string;
   amount: number;
-  type: "+" | "-" | "";
+  type: TransactionType;
 }
 
 export const deleteTransactionWithBalance = createAsyncThunk<

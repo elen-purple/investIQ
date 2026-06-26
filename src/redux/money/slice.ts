@@ -4,18 +4,10 @@ import {
   addTransactionWithBalance,
   deleteTransactionWithBalance,
 } from "../services/operations";
-
-interface Note {
-  id: string;
-  desc: string;
-  date: string;
-  category: string;
-  amount: number;
-  type: "+" | "-" | "";
-}
+import type { MoneyEntry } from "../../types/transactions";
 
 interface InitialState {
-  notes: Note[];
+  notes: MoneyEntry[];
   isLoading: boolean;
   error: null | string;
 }

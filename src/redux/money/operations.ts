@@ -2,16 +2,10 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "../../services/firebase";
 import type { RootState } from "../store";
+import { isTransactionType, type MoneyEntry } from "../../types/transactions";
 
 export const fetchMoney = createAsyncThunk<
-  {
-    id: string;
-    desc: string;
-    amount: number;
-    date: string;
-    category: string;
-    type: "+" | "-" | "";
-  }[],
+  MoneyEntry[],
   void,
   { state: RootState }
 >("money/fetchMoney", async (_, thunkAPI) => {
@@ -22,16 +16,12 @@ export const fetchMoney = createAsyncThunk<
     const listRef = collection(db, "users", userId, "money");
     const q = query(listRef, orderBy("date"));
     const querySnapshot = await getDocs(q);
-    const items: {
-      id: string;
-      desc: string;
-      amount: number;
-      date: string;
-      category: string;
-      type: "+" | "-" | "";
-    }[] = [];
+    const items: MoneyEntry[] = [];
     querySnapshot.forEach((doc) => {
       const data = doc.data();
+
+      if (!isTransactionType(data.type)) return;
+
       items.push({
         id: doc.id,
         date: data.date?.toDate ? data.date.toDate().toISOString() : data.date,
