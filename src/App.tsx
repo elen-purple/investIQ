@@ -44,7 +44,14 @@ function App() {
 
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        dispatch(setUser(user.uid));
+        dispatch(
+          setUser({
+            uid: user.uid,
+            email: user.email ?? "",
+            displayName: user.displayName ?? "",
+          }),
+        );
+
         dispatch(fetchMoney());
         dispatch(fetchBalance());
       } else {

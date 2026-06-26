@@ -22,7 +22,8 @@ export const fetchBalance = createAsyncThunk<
     } else {
       return { balance: 0 };
     }
-  } catch (error: any) {
-    return thunkAPI.rejectWithValue(error.message);
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "Unknown error";
+    return thunkAPI.rejectWithValue(message);
   }
 });

@@ -7,21 +7,16 @@ export const Reduction = () => {
   const location = useLocation();
   const notes = useAppSelector((state) => selectNotes(state.money));
   const isLoading = useAppSelector((state) => selectIsLoading(state.money));
-  const months: { month: number; year: number }[] = [];
+  const now = new Date();
 
-  for (let i = 0; i < 6; i += 1) {
-    if (new Date().getMonth() + 1 <= i) {
-      months.push({
-        month: 12 + (new Date().getMonth() + 1 - i),
-        year: new Date().getFullYear() - 1,
-      });
-    } else {
-      months.push({
-        month: new Date().getMonth() + 1 - i,
-        year: new Date().getFullYear(),
-      });
-    }
-  }
+  const months = Array.from({ length: 6 }, (_, index) => {
+    const date = new Date(now.getFullYear(), now.getMonth() - index, 1);
+
+    return {
+      month: date.getMonth() + 1,
+      year: date.getFullYear(),
+    };
+  });
 
   const array = months?.map((month: { month: number; year: number }) => {
     return {
@@ -57,7 +52,7 @@ export const Reduction = () => {
     <Wrapper>
       <Title>Зведення</Title>
       {isLoading ? (
-        <p>{isLoading}</p>
+        <p>Завантаження</p>
       ) : (
         <ul>
           {array.map(

@@ -24,7 +24,7 @@ export const SharedLayout = ({
         closeModal={closeModalL}
         title="Ви дійсно хочете вийти?"
         action={async () => {
-          await dispatch(logOut());
+          await dispatch(logOut()).unwrap();
         }}
       />
       <Outlet />

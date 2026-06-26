@@ -92,8 +92,8 @@ export const MonthsSlider = ({ months, setCurrentDate }: MonthsSliderProps) => {
         }}
         className="mySwiper"
       >
-        {months.map(({ month, year }: Month, index) => (
-          <SwiperSlide key={index}>
+        {months.map(({ month, year }: Month) => (
+          <SwiperSlide key={`${month}-${year}`}>
             <Content className="slide-content">
               <Title className="slider-title">Поточний період</Title>
               <Date className="slider-date">

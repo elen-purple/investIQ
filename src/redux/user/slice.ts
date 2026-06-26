@@ -34,9 +34,10 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
-      state.userId = action.payload;
-      state.isLoading = false;
+      state.user = action.payload;
+      state.userId = action.payload.uid;
       state.isAuth = true;
+      state.isLoading = false;
     },
     clearUser: (state) => {
       state.userId = null;
@@ -55,6 +56,7 @@ const userSlice = createSlice({
         state.isAuth = true;
         state.isLoading = false;
         state.errorR = null;
+        state.userId = action.payload.uid;
       })
       .addCase(register.pending, (state) => {
         state.isLoading = true;
@@ -74,6 +76,7 @@ const userSlice = createSlice({
         state.isAuth = true;
         state.isLoading = false;
         state.errorL = null;
+        state.userId = action.payload.uid;
       })
       .addCase(logIn.pending, (state) => {
         state.isLoading = true;

@@ -22,7 +22,7 @@ interface HeaderProps {
 export const Header = ({ openModalL }: HeaderProps) => {
   const user = useAppSelector(selectUser);
   const isAuth = useAppSelector(selectAuth);
-  const displayName = user?.displayName;
+  const displayName = user?.displayName || user?.email || "User";
 
   const handleLogOut = () => {
     openModalL();

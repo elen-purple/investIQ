@@ -48,17 +48,10 @@ export const Categories = () => {
   }, [notes]);
 
   const sortedMonths = useMemo(() => {
-    return months.sort(
-      (
-        { year: yearA, month: monthA }: { year: number; month: number },
-        { year: yearB, month: monthB }: { year: number; month: number },
-      ) => {
-        if (yearB !== yearA) {
-          return yearB - yearA;
-        }
-        return monthB - monthA;
-      },
-    );
+    return [...months].sort((a, b) => {
+      if (b.year !== a.year) return b.year - a.year;
+      return b.month - a.month;
+    });
   }, [months]);
 
   const [currentDate, setCurrentDate] = useState<{
@@ -70,20 +63,15 @@ export const Categories = () => {
     location.pathname === "/categories/getMoney"
       ? "salary"
       : location.pathname === "/categories/spendMoney"
-        ? "products"
+        ? "transport"
         : "",
   );
 
   useEffect(() => {
     if (!sortedMonths[0]) return;
 
-    setCurrentDate((prev) => {
+    setCurrentDate(() => {
       const next = sortedMonths[0];
-
-      if (prev.month === next.month && prev.year === next.year) {
-        return prev;
-      }
-
       return next;
     });
   }, [sortedMonths]);

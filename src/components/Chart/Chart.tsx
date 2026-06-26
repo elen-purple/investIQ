@@ -13,7 +13,7 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 import { useAppSelector } from "../../redux/store";
 import { selectNotes } from "../../redux/money/selectors";
 import { useLocation } from "react-router-dom";
-import { Wrapper } from "./ChartStyled";
+import { Text, Wrapper } from "./ChartStyled";
 
 ChartJS.register(
   CategoryScale,
@@ -58,7 +58,7 @@ export const ExpensesChart = ({
       } else if (location.pathname === "/categories/spendMoney") {
         return type === "-";
       } else {
-        return;
+        return false;
       }
     })
     .filter(({ date }: { date: string }) => {
@@ -79,7 +79,7 @@ export const ExpensesChart = ({
 
   const options: ChartOptions<"bar"> = {
     responsive: true,
-    maintainAspectRatio: false, // Дозволяє кастомному контейнеру керувати висотою
+    maintainAspectRatio: false,
     indexAxis: isMobile ? "y" : "x",
     layout: {
       padding: isMobile
@@ -119,7 +119,7 @@ export const ExpensesChart = ({
         ticks: {
           display: isMobile,
           mirror: true,
-          align: "start", // Вирівнює всі назви строго по лівому краю без підкреслень TS
+          align: "start",
           labelOffset: -22,
           color: "#52555F",
           font: {
@@ -148,13 +148,16 @@ export const ExpensesChart = ({
   };
 
   return (
-    // Змінено висоту для комп'ютера на 422px
     <Wrapper
       style={{
-        height: isMobile ? `${array.length * 80}px` : "422px",
+        height: isMobile ? `${Math.max(array.length * 80, 160)}px` : "422px",
       }}
     >
-      <Bar data={data} options={options} />
+      {array.length === 0 ? (
+        <Text>Немає даних за цей період</Text>
+      ) : (
+        <Bar data={data} options={options} />
+      )}
     </Wrapper>
   );
 };

@@ -46,7 +46,7 @@ const moneySlice = createSlice({
             ? action.payload
             : (action.error.message ?? null);
       })
-      .addCase(addTransactionWithBalance.fulfilled, (state, action: any) => {
+      .addCase(addTransactionWithBalance.fulfilled, (state, action) => {
         state.notes.push(action.payload.item);
       })
       .addCase(addTransactionWithBalance.rejected, (state, action) => {
@@ -55,7 +55,7 @@ const moneySlice = createSlice({
             ? action.payload
             : (action.error.message ?? null);
       })
-      .addCase(deleteTransactionWithBalance.fulfilled, (state, action: any) => {
+      .addCase(deleteTransactionWithBalance.fulfilled, (state, action) => {
         state.notes = [
           ...state.notes.filter(({ id }) => id !== action.payload.itemId),
         ];

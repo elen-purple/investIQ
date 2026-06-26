@@ -20,12 +20,12 @@ import {
   Title,
   Wrapper,
 } from "./TableStatsStyled";
-import { CATEGORY_LABELS } from "../../constants/categories";
+import { getCategoryLabel } from "../../constants/categories";
 
 interface TableStatsProps {
   setDeletedElementId: React.Dispatch<React.SetStateAction<string | null>>;
   setDeletedElementAmount: React.Dispatch<React.SetStateAction<number | null>>;
-  openModalD: () => {};
+  openModalD: () => void;
 }
 
 export const TableStats = ({
@@ -46,8 +46,12 @@ export const TableStats = ({
   const notes = useAppSelector((state) => selectNotes(state.money));
   const isLoading = useAppSelector((state) => selectIsLoading(state.money));
 
-  const handleDelete = (e: any, id: string, amount: number) => {
-    if (e.target.closest(`[data-action="delete"]`)) {
+  const handleDelete = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    id: string,
+    amount: number,
+  ) => {
+    if (e.currentTarget.closest(`[data-action="delete"]`)) {
       setDeletedElementId(id);
       setDeletedElementAmount(amount);
       openModalD();
@@ -98,13 +102,7 @@ export const TableStats = ({
                             .padStart(2, "0")}
                           .{new Date(date).getUTCFullYear()}
                         </Text>
-                        <Text>
-                          {
-                            CATEGORY_LABELS[
-                              category as keyof typeof CATEGORY_LABELS
-                            ]
-                          }
-                        </Text>
+                        <Text>{getCategoryLabel(category)}</Text>
                       </Texts>
                     </div>
                     <Wrapper>
@@ -184,13 +182,7 @@ export const TableStats = ({
                         .{new Date(date).getUTCFullYear()}
                       </NameStyled>
                       <NameStyled>{desc}</NameStyled>
-                      <NameStyled>
-                        {
-                          CATEGORY_LABELS[
-                            category as keyof typeof CATEGORY_LABELS
-                          ]
-                        }
-                      </NameStyled>
+                      <NameStyled>{getCategoryLabel(category)}</NameStyled>
                       <SumDesc
                         style={{
                           color:

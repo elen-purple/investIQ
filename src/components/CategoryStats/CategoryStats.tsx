@@ -12,7 +12,7 @@ import {
   Wrapper,
 } from "./CategoryStatsStyled";
 import { dataS, dataG } from "../Entering/data";
-import { CATEGORY_LABELS } from "../../constants/categories";
+import { getCategoryLabel } from "../../constants/categories";
 
 interface Month {
   year: number;
@@ -50,7 +50,7 @@ export const CategoryStats = ({
       } else if (location.pathname === "/categories/spendMoney") {
         return type === "-";
       } else {
-        return;
+        return false;
       }
     })
     .filter(({ date }: { date: string }) => {
@@ -103,9 +103,7 @@ export const CategoryStats = ({
                     <use href={`#${id}`}></use>
                   </Icon>
                 </Wrapper>
-                <Title>
-                  {CATEGORY_LABELS[id as keyof typeof CATEGORY_LABELS]}
-                </Title>
+                <Title>{getCategoryLabel(id)}</Title>
               </Btn>
             </li>
           ))}
@@ -133,9 +131,7 @@ export const CategoryStats = ({
                     <use href={`#${id}`}></use>
                   </Icon>
                 </Wrapper>
-                <Title>
-                  {CATEGORY_LABELS[id as keyof typeof CATEGORY_LABELS]}
-                </Title>
+                <Title>{getCategoryLabel(id)}</Title>
               </Btn>
             </li>
           ))}

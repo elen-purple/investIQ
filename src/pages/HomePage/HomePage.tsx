@@ -44,27 +44,25 @@ const HomePage = ({
   const [modal, setModal] = useState<boolean>(false);
 
   const handleDelete = async () => {
-    try {
-      const transactionType = (
-        location.pathname === "/getMoney"
-          ? "+"
-          : location.pathname === "/spendMoney"
-            ? "-"
-            : "+"
-      ) as "+" | "-";
-
-      await dispatch(
-        deleteTransactionWithBalance({
-          itemId: typeof deletedElementId === "string" ? deletedElementId : "",
-          amount:
-            typeof deletedElementAmount === "number" ? deletedElementAmount : 0,
-          type: transactionType,
-        }),
-      ).unwrap();
-      closeModalD();
-    } catch (error) {
-      console.log(error);
+    const transactionType = (
+      location.pathname === "/getMoney"
+        ? "+"
+        : location.pathname === "/spendMoney"
+          ? "-"
+          : "+"
+    ) as "+" | "-";
+    if (!deletedElementId || deletedElementAmount === null) {
+      throw new Error("Немає даних для видалення");
     }
+
+    await dispatch(
+      deleteTransactionWithBalance({
+        itemId: typeof deletedElementId === "string" ? deletedElementId : "",
+        amount:
+          typeof deletedElementAmount === "number" ? deletedElementAmount : 0,
+        type: transactionType,
+      }),
+    ).unwrap();
   };
   return (
     <Section>

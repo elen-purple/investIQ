@@ -1,26 +1,20 @@
-import { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { Arrow, Slider, Text } from "./TypesStyled";
 
 export const Types = () => {
   const location = useLocation();
-  const [type, setType] = useState<string>(location.pathname.split("/")[2]);
+  const type = location.pathname.split("/")[2];
 
-  useEffect(() => {
-    setType(location.pathname.split("/")[2]);
-  }, [location]);
+  const targetType =
+    type === "getMoney"
+      ? "spendMoney"
+      : type === "spendMoney"
+        ? "getMoney"
+        : "";
 
   return (
     <Slider>
-      <NavLink
-        to={
-          type === "getMoney"
-            ? "spendMoney"
-            : type === "spendMoney"
-              ? "getMoney"
-              : ""
-        }
-      >
+      <NavLink to={targetType}>
         <Arrow width="16" height="10">
           <use href="#arrow"></use>
         </Arrow>
@@ -32,15 +26,7 @@ export const Types = () => {
             ? "Витрати"
             : ""}
       </Text>
-      <NavLink
-        to={
-          type === "getMoney"
-            ? "spendMoney"
-            : type === "spendMoney"
-              ? "getMoney"
-              : ""
-        }
-      >
+      <NavLink to={targetType}>
         <Arrow width="16" height="10">
           <use href="#arrow"></use>
         </Arrow>

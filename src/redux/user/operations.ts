@@ -30,8 +30,9 @@ export const register = createAsyncThunk<
       email: user.email ?? "",
       displayName: name,
     };
-  } catch (error: any) {
-    return thunkAPI.rejectWithValue(error.message);
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "Unknown error";
+    return thunkAPI.rejectWithValue(message);
   }
 });
 
@@ -53,15 +54,17 @@ export const logIn = createAsyncThunk<
       email: user.email ?? "",
       displayName: user.displayName ?? "",
     };
-  } catch (error: any) {
-    return thunkAPI.rejectWithValue(error.message);
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "Unknown error";
+    return thunkAPI.rejectWithValue(message);
   }
 });
 
 export const logOut = createAsyncThunk("user/logOut", async (_, thunkAPI) => {
   try {
     await signOut(auth);
-  } catch (error: any) {
-    return thunkAPI.rejectWithValue(error.message);
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "Unknown error";
+    return thunkAPI.rejectWithValue(message);
   }
 });

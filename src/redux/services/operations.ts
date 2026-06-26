@@ -18,7 +18,7 @@ export const addTransactionWithBalance = createAsyncThunk<
       amount: number;
       date: string;
       category: string;
-      type: string;
+      type: "+" | "-" | "";
     };
     newBalance: number;
   },
@@ -75,8 +75,9 @@ export const addTransactionWithBalance = createAsyncThunk<
       });
 
       return result;
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.message);
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Unknown error";
+      return thunkAPI.rejectWithValue(message);
     }
   },
 );
@@ -127,8 +128,9 @@ export const deleteTransactionWithBalance = createAsyncThunk<
       });
 
       return result;
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.message);
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Unknown error";
+      return thunkAPI.rejectWithValue(message);
     }
   },
 );

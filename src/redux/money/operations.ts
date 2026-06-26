@@ -42,7 +42,8 @@ export const fetchMoney = createAsyncThunk<
       });
     });
     return items;
-  } catch (e: any) {
-    return thunkAPI.rejectWithValue(e.message);
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "Unknown error";
+    return thunkAPI.rejectWithValue(message);
   }
 });

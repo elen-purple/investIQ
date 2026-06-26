@@ -1,4 +1,4 @@
-export const CATEGORY_LABELS = {
+const CATEGORY_LABELS = {
   transport: "Транспорт",
   products: "Продукти",
   health: "Здоров'я",
@@ -12,4 +12,8 @@ export const CATEGORY_LABELS = {
   other: "Інше",
   salary: "ЗП",
   addition: "Дод. прибуток",
+};
+
+export const getCategoryLabel = (category: string) => {
+  return CATEGORY_LABELS[category as keyof typeof CATEGORY_LABELS] ?? category;
 };

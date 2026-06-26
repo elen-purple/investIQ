@@ -29,10 +29,10 @@ import {
   WrapperBtn,
   WrapperInput,
 } from "./EnteringStyled";
-import { CATEGORY_LABELS } from "../../constants/categories";
 import { addTransactionWithBalance } from "../../redux/services/operations";
 import { Header } from "../Header/Header";
 import { Container } from "../Container/Container";
+import { getCategoryLabel } from "../../constants/categories";
 
 interface FormValues {
   desc: string;
@@ -78,6 +78,17 @@ export const Entering = ({
     data = dataG;
   }
 
+  const handleHelper = (value: string): number | null => {
+    const normalized = value.trim().replace(",", ".");
+
+    if (!/^\d+(\.\d{1,2})?$/.test(normalized)) {
+      return null;
+    }
+
+    const parsed = Number(normalized);
+    return parsed > 0 ? parsed : null;
+  };
+
   const handleValidate = (values: FormValues) => {
     const errors: FormErrors = {};
     if (!values.desc) {
@@ -88,7 +99,7 @@ export const Entering = ({
     }
     if (!values.amount) {
       errors.amount = "Required";
-    } else if (!Number(values.amount) || Number(values.amount) <= 0) {
+    } else if (handleHelper(values.amount) === null) {
       errors.amount = "Amount must be a positive number";
     }
     if (values.category === "default") {
@@ -97,26 +108,32 @@ export const Entering = ({
     return errors;
   };
 
-  const handleSumbit = async (values: FormValues, resetForm: () => void) => {
-    await dispatch(
-      addTransactionWithBalance({
-        desc: values.desc,
-        amount: Number.parseFloat(values.amount),
-        category: values.category,
-        type:
-          location.pathname === "/getMoney"
-            ? "+"
-            : location.pathname === "/spendMoney"
-              ? "-"
-              : "",
-      }),
-    );
-    values.amount = "";
-    values.category = "default";
-    values.desc = "";
-    resetForm();
-    setModal(false);
-    setList(false);
+  const handleSumbitEntry = async (
+    values: FormValues,
+    resetForm: () => void,
+  ) => {
+    const amount = handleHelper(values.amount);
+    if (amount === null) return;
+    try {
+      await dispatch(
+        addTransactionWithBalance({
+          desc: values.desc,
+          amount: Number.parseFloat(values.amount),
+          category: values.category,
+          type:
+            location.pathname === "/getMoney"
+              ? "+"
+              : location.pathname === "/spendMoney"
+                ? "-"
+                : "",
+        }),
+      ).unwrap();
+      resetForm();
+      setModal(false);
+      setList(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -147,10 +164,16 @@ export const Entering = ({
                     }}
                     validate={(values: FormValues) => handleValidate(values)}
                     onSubmit={(values: FormValues, { resetForm }) =>
-                      handleSumbit(values, resetForm)
+                      handleSumbitEntry(values, resetForm)
                     }
                   >
-                    {({ values, handleChange, handleSubmit, resetForm }) => (
+                    {({
+                      values,
+                      handleChange,
+                      handleSubmit,
+                      resetForm,
+                      setFieldValue,
+                    }) => (
                       <form onSubmit={handleSubmit}>
                         <label>
                           <Input
@@ -175,9 +198,7 @@ export const Entering = ({
                                 ? isIncome
                                   ? "Категорія прибутку"
                                   : "Категорія товару"
-                                : CATEGORY_LABELS[
-                                    values.category as keyof typeof CATEGORY_LABELS
-                                  ]}
+                                : getCategoryLabel(values.category)}
                               <ArrowDown width="18" height="10">
                                 <use href="#arrow"></use>
                               </ArrowDown>
@@ -188,16 +209,12 @@ export const Entering = ({
                                   <li key={id} id={id}>
                                     <BtnItem
                                       onClick={() => {
-                                        values.category = id;
+                                        setFieldValue("category", id);
                                         setList(false);
                                       }}
                                       type="button"
                                     >
-                                      {
-                                        CATEGORY_LABELS[
-                                          id as keyof typeof CATEGORY_LABELS
-                                        ]
-                                      }
+                                      {getCategoryLabel(id)}
                                     </BtnItem>
                                   </li>
                                 ))}
@@ -278,7 +295,7 @@ export const Entering = ({
               initialValues={{ desc: "", amount: "", category: "default" }}
               validate={(values: FormValues) => handleValidate(values)}
               onSubmit={(values: FormValues, { resetForm }) =>
-                handleSumbit(values, resetForm)
+                handleSumbitEntry(values, resetForm)
               }
             >
               {({ values, handleChange, handleSubmit, resetForm }) => (
@@ -320,9 +337,7 @@ export const Entering = ({
                               ? isIncome
                                 ? "Категорія прибутку"
                                 : "Категорія товару"
-                              : CATEGORY_LABELS[
-                                  values.category as keyof typeof CATEGORY_LABELS
-                                ]}
+                              : getCategoryLabel(values.category)}
                             <ArrowDown width="18" height="10">
                               <use href="#arrow"></use>
                             </ArrowDown>
@@ -338,11 +353,7 @@ export const Entering = ({
                                     }}
                                     type="button"
                                   >
-                                    {
-                                      CATEGORY_LABELS[
-                                        id as keyof typeof CATEGORY_LABELS
-                                      ]
-                                    }
+                                    {getCategoryLabel(id)}
                                   </BtnItem>
                                 </li>
                               ))}
