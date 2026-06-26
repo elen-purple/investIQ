@@ -31,23 +31,24 @@ export const CategoryStats = ({
   currentCategory,
 }: CategoriesStatesProps) => {
   const location = useLocation();
+  const { pathname } = location;
   const notes = useAppSelector((state) => selectNotes(state.money));
 
   useEffect(() => {
     setCurrentCategory(
-      location.pathname === "/categories/getMoney"
+      pathname === "/categories/getMoney"
         ? "salary"
-        : location.pathname === "/categories/spendMoney"
+        : pathname === "/categories/spendMoney"
           ? "transport"
           : "",
     );
-  }, [location]);
+  }, [pathname, setCurrentCategory]);
 
   const array = notes
     .filter(({ type }) => {
-      if (location.pathname === "/categories/getMoney") {
+      if (pathname === "/categories/getMoney") {
         return type === "+";
-      } else if (location.pathname === "/categories/spendMoney") {
+      } else if (pathname === "/categories/spendMoney") {
         return type === "-";
       } else {
         return false;
@@ -80,7 +81,7 @@ export const CategoryStats = ({
 
   return (
     <List>
-      {location.pathname === "/categories/getMoney" ? (
+      {pathname === "/categories/getMoney" ? (
         <>
           {dataG.map(({ id }: { id: string }) => (
             <li key={id}>
@@ -108,7 +109,7 @@ export const CategoryStats = ({
             </li>
           ))}
         </>
-      ) : location.pathname === "/categories/spendMoney" ? (
+      ) : pathname === "/categories/spendMoney" ? (
         <>
           {dataS.map(({ id }: { id: string }) => (
             <li key={id}>
