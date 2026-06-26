@@ -118,7 +118,7 @@ export const Entering = ({
       await dispatch(
         addTransactionWithBalance({
           desc: values.desc,
-          amount: Number.parseFloat(values.amount),
+          amount,
           category: values.category,
           type:
             location.pathname === "/getMoney"
