@@ -1,5 +1,14 @@
+import { useState } from "react";
 import { Button } from "../Button/Button";
-import { Backdrop, Close, Div, Icon, Title, Wrap } from "./ModalStyled";
+import {
+  Backdrop,
+  Close,
+  Div,
+  ErrorMessage,
+  Icon,
+  Title,
+  Wrap,
+} from "./ModalStyled";
 
 interface ModalProps {
   isOpen: boolean;
@@ -9,17 +18,26 @@ interface ModalProps {
 }
 
 export const Modal = ({ isOpen, closeModal, title, action }: ModalProps) => {
+  const [actionError, setActionError] = useState<string | null>(null);
+
+  const handleClose = () => {
+    setActionError(null);
+    closeModal();
+  };
+
   const handleSuggestion = async () => {
     try {
+      setActionError(null);
       await action();
-      closeModal();
+      handleClose();
     } catch (error) {
       console.log(error);
+      setActionError("Не вдалося виконати дію. Спробуйте ще раз.");
     }
   };
 
   const handleDecline = () => {
-    closeModal();
+    handleClose();
   };
 
   return (
@@ -27,12 +45,13 @@ export const Modal = ({ isOpen, closeModal, title, action }: ModalProps) => {
       {isOpen ? (
         <Backdrop>
           <Div>
-            <Close onClick={closeModal}>
+            <Close onClick={handleClose}>
               <Icon width="12" height="12">
                 <use href="#close"></use>
               </Icon>
             </Close>
             <Title>{title}</Title>
+            {actionError ? <ErrorMessage>{actionError}</ErrorMessage> : null}
             <Wrap>
               <Button
                 bg="orange"

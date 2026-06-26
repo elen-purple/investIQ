@@ -49,3 +49,11 @@ export const Wrap = styled.div`
   justify-content: center;
   gap: 16px;
 `;
+
+export const ErrorMessage = styled.p`
+  margin-bottom: 16px;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  text-align: center;
+  color: ${({ theme }) => theme.colors.errorColor};
+`;

@@ -17,6 +17,7 @@ import {
   DateIcon,
   DateText,
   DateWrapper,
+  ErrorMessage,
   FormStyled,
   GreyBgInput,
   Input,
@@ -64,6 +65,7 @@ export const Entering = ({
   const isIncome = location.pathname.includes("getMoney");
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 703);
   const [list, setList] = useState<boolean>(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 703);
@@ -115,6 +117,7 @@ export const Entering = ({
     const amount = handleHelper(values.amount);
     if (amount === null) return;
     try {
+      setSubmitError(null);
       await dispatch(
         addTransactionWithBalance({
           desc: values.desc,
@@ -133,6 +136,7 @@ export const Entering = ({
       setList(false);
     } catch (error) {
       console.log(error);
+      setSubmitError("Не вдалося додати запис. Спробуйте ще раз.");
     }
   };
 
@@ -236,6 +240,9 @@ export const Entering = ({
                             <use href="#calculator"></use>
                           </CalculatorIcon>
                         </NumberLabel>
+                        {submitError ? (
+                          <ErrorMessage>{submitError}</ErrorMessage>
+                        ) : null}
                         <WrapperBtn>
                           <Button
                             bg="orange"
@@ -383,6 +390,9 @@ export const Entering = ({
                       </NumberLabel>
                     </InputsOnlyWrapper>
                   </InputsWrapper>
+                  {submitError ? (
+                    <ErrorMessage>{submitError}</ErrorMessage>
+                  ) : null}
                   <WrapperBtn>
                     <Button
                       bg="orange"

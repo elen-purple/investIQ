@@ -1,4 +1,5 @@
 import { Formik } from "formik";
+import { useState } from "react";
 import { Container } from "../Container/Container";
 import { Button } from "../Button/Button";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +11,7 @@ import {
   Desc,
   Desk,
   Div,
+  ErrorMessage,
   GreyBg,
   Hand,
   Section,
@@ -45,6 +47,7 @@ interface FormErrors {
 export const Form = ({ type }: FormProps) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const handleNavigate = () => {
     if (type === "signup") {
@@ -102,6 +105,7 @@ export const Form = ({ type }: FormProps) => {
             }}
             onSubmit={async (values: FormValues, { resetForm }) => {
               try {
+                setSubmitError(null);
                 if (type === "signup") {
                   await dispatch(
                     register({
@@ -121,6 +125,11 @@ export const Form = ({ type }: FormProps) => {
                 resetForm();
               } catch (error) {
                 console.log(error);
+                setSubmitError(
+                  type === "signup"
+                    ? "Не вдалося зареєструватися. Перевірте дані та спробуйте ще раз."
+                    : "Не вдалося увійти. Перевірте ел. пошту та пароль.",
+                );
               }
             }}
           >
@@ -158,6 +167,9 @@ export const Form = ({ type }: FormProps) => {
                   placeholder={"Пароль"}
                   label={"Пароль:"}
                 />
+                {submitError ? (
+                  <ErrorMessage>{submitError}</ErrorMessage>
+                ) : null}
                 {type === "signup" ? (
                   <Buttons>
                     <Button

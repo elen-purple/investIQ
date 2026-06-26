@@ -108,7 +108,7 @@ export const GreyBg = styled.div`
   z-index: -1;
   height: 342px;
   border-radius: 0 0 0 120px;
-  background-color: ${({theme})=>theme.colors.secondaryBg};
+  background-color: ${({ theme }) => theme.colors.secondaryBg};
 
   @media screen and (min-width: 703px) {
     height: 582px;
@@ -134,7 +134,7 @@ export const Title = styled.h1`
   font-weight: 900;
   font-size: 64px;
   text-align: center;
-  color: ${({theme})=>theme.colors.primaryText};
+  color: ${({ theme }) => theme.colors.primaryText};
 
   @media screen and (min-width: 703px) {
     font-size: 102px;
@@ -149,7 +149,7 @@ export const Subtitle = styled.h2`
   letter-spacing: 0.15em;
   text-transform: uppercase;
   padding-left: 41px;
-  color: ${({theme})=>theme.colors.secondaryText};
+  color: ${({ theme }) => theme.colors.secondaryText};
   @media screen and (min-width: 703px) {
     padding-left: 58px;
   }
@@ -166,7 +166,7 @@ export const Desc = styled.p`
   width: 222px;
   margin: 0 auto 20px;
   margin-bottom: 20px;
-  color: ${({theme})=>theme.colors.secondaryText};
+  color: ${({ theme }) => theme.colors.secondaryText};
 `;
 
 export const Div = styled.div`
@@ -175,7 +175,7 @@ export const Div = styled.div`
   border-radius: 30px;
   width: 282px;
   box-shadow: 0 10px 60px 0 rgba(170, 178, 197, 0.2);
-  background: ${({theme})=>theme.colors.primaryBg};
+  background: ${({ theme }) => theme.colors.primaryBg};
 
   @media screen and (min-width: 703px) {
     width: 436px;
@@ -191,4 +191,12 @@ export const Div = styled.div`
 export const Buttons = styled.div`
   display: flex;
   justify-content: space-between;
+`;
+
+export const ErrorMessage = styled.p`
+  margin-bottom: 16px;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  text-align: center;
+  color: ${({ theme }) => theme.colors.errorColor};
 `;
