@@ -11,12 +11,7 @@ interface Month {
 
 interface MonthsSliderProps {
   months: Month[];
-  setCurrentDate: React.Dispatch<
-    React.SetStateAction<{
-      month: number;
-      year: number;
-    }>
-  >;
+  setCurrentDate: (date: Month) => void;
 }
 
 const MONTH_NAMES = [

@@ -6,7 +6,7 @@ import { MonthsSlider } from "../../components/MonthsSlider/MonthsSlider";
 import { useLocation } from "react-router-dom";
 import { useAppSelector } from "../../redux/store";
 import { selectNotes } from "../../redux/money/selectors";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Stats } from "../../components/Stats/Stats";
 import { Types } from "../../components/Types/Types";
 import { CategoryStats } from "../../components/CategoryStats/CategoryStats";
@@ -54,10 +54,21 @@ export const Categories = () => {
     });
   }, [months]);
 
-  const [currentDate, setCurrentDate] = useState<{
+  const [selectedDate, setSelectedDate] = useState<{
     month: number;
     year: number;
-  }>({ month: 0, year: 0 });
+  } | null>(null);
+
+  const defaultDate = sortedMonths[0] ?? { month: 0, year: 0 };
+
+  const selectedDateIsAvailable =
+    selectedDate !== null &&
+    sortedMonths.some(
+      ({ month, year }) =>
+        month === selectedDate.month && year === selectedDate.year,
+    );
+
+  const currentDate = selectedDateIsAvailable ? selectedDate : defaultDate;
 
   const [currentCategory, setCurrentCategory] = useState<string>(
     location.pathname === "/categories/getMoney"
@@ -66,15 +77,6 @@ export const Categories = () => {
         ? "transport"
         : "",
   );
-
-  useEffect(() => {
-    if (!sortedMonths[0]) return;
-
-    setCurrentDate(() => {
-      const next = sortedMonths[0];
-      return next;
-    });
-  }, [sortedMonths]);
 
   return (
     <Section>
@@ -88,7 +90,10 @@ export const Categories = () => {
             <Balance />
             <Notification />
           </Wrap>
-          <MonthsSlider setCurrentDate={setCurrentDate} months={sortedMonths} />
+          <MonthsSlider
+            setCurrentDate={setSelectedDate}
+            months={sortedMonths}
+          />
         </Top>
         <Stats currentDate={currentDate} />
         <Wrapper>
