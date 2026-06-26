@@ -12,6 +12,7 @@ import {
   Wrapper,
 } from "./CategoryStatsStyled";
 import { dataS, dataG } from "../Entering/data";
+import { CATEGORY_LABELS } from "../../constants/categories";
 
 interface Month {
   year: number;
@@ -65,16 +66,14 @@ export const CategoryStats = ({
       maximumFractionDigits: 2,
     })
       .format(
-        Number.parseFloat(
-          array
-            .filter(
-              ({ category }: { category: string }) => category === myCategory,
-            )
-            .reduce(
-              (sum: any, { amount }: { amount: number }) => sum + amount,
-              0,
-            ),
-        ),
+        array
+          .filter(
+            ({ category }: { category: string }) => category === myCategory,
+          )
+          .reduce(
+            (sum: number, { amount }: { amount: number }) => sum + amount,
+            0,
+          ),
       )
       .replace(/,/g, " ");
   };
@@ -83,7 +82,7 @@ export const CategoryStats = ({
     <List>
       {location.pathname === "/categories/getMoney" ? (
         <>
-          {dataG.map(({ label, id }: { label: string; id: string }) => (
+          {dataG.map(({ id }: { id: string }) => (
             <li key={id}>
               <Btn onClick={() => setCurrentCategory(`${id}`)}>
                 <Sum>{getSum(`${id}`)}</Sum>
@@ -104,14 +103,16 @@ export const CategoryStats = ({
                     <use href={`#${id}`}></use>
                   </Icon>
                 </Wrapper>
-                <Title>{label}</Title>
+                <Title>
+                  {CATEGORY_LABELS[id as keyof typeof CATEGORY_LABELS]}
+                </Title>
               </Btn>
             </li>
           ))}
         </>
       ) : location.pathname === "/categories/spendMoney" ? (
         <>
-          {dataS.map(({ label, id }: { label: string; id: string }) => (
+          {dataS.map(({ id }: { id: string }) => (
             <li key={id}>
               <Btn onClick={() => setCurrentCategory(`${id}`)}>
                 <Sum>{getSum(`${id}`)}</Sum>
@@ -132,7 +133,9 @@ export const CategoryStats = ({
                     <use href={`#${id}`}></use>
                   </Icon>
                 </Wrapper>
-                <Title>{label}</Title>
+                <Title>
+                  {CATEGORY_LABELS[id as keyof typeof CATEGORY_LABELS]}
+                </Title>
               </Btn>
             </li>
           ))}

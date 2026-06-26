@@ -30,7 +30,7 @@ const balanceSlice = createSlice({
             ? action.payload
             : (action.error.message ?? null);
       })
-      .addCase(addTransactionWithBalance.fulfilled, (state, action: any) => {
+      .addCase(addTransactionWithBalance.fulfilled, (state, action) => {
         state.value = action.payload.newBalance;
       })
       .addCase(addTransactionWithBalance.rejected, (state, action) => {
@@ -39,7 +39,7 @@ const balanceSlice = createSlice({
             ? action.payload
             : (action.error.message ?? null);
       })
-      .addCase(deleteTransactionWithBalance.fulfilled, (state, action: any) => {
+      .addCase(deleteTransactionWithBalance.fulfilled, (state, action) => {
         state.value = action.payload.newBalance;
       })
       .addCase(deleteTransactionWithBalance.rejected, (state, action) => {

@@ -16,12 +16,12 @@ export const NavLinkStyled = styled(NavLink)`
   letter-spacing: 0.02em;
   text-transform: uppercase;
   text-align: center;
-  border: 2px solid ${(props: any) => props.theme.colors.primaryBg};
-  color: ${(props: any) => props.theme.colors.primaryText};
-  background-color: ${(props: any) => props.theme.colors.secondaryBg};
+  border: 2px solid ${({ theme }) => theme.colors.primaryBg};
+  color: ${({ theme }) => theme.colors.primaryText};
+  background-color: ${({ theme }) => theme.colors.secondaryBg};
 
   &.active {
-    color: ${(props: any) => props.theme.colors.accentBg};
+    color: ${({ theme }) => theme.colors.accentBg};
   }
 
   @media screen and (min-width: 703px) {
@@ -30,8 +30,8 @@ export const NavLinkStyled = styled(NavLink)`
     border-radius: 20px 20px 0 0;
     border: none;
     &.active {
-      color: ${(props: any) => props.theme.colors.accentBg};
-      background-color: ${(props: any) => props.theme.colors.primaryBg};
+      color: ${({ theme }) => theme.colors.accentBg};
+      background-color: ${({ theme }) => theme.colors.primaryBg};
     }
   }
 `;

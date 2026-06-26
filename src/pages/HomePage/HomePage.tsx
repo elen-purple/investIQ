@@ -42,46 +42,37 @@ const HomePage = ({
   const dispatch = useAppDispatch();
   const location = useLocation();
   const [modal, setModal] = useState<boolean>(false);
-  const [_, setIsMobile] = useState(window.innerWidth <= 703);
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 703);
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+
+  const handleDelete = async () => {
+    try {
+      const transactionType = (
+        location.pathname === "/getMoney"
+          ? "+"
+          : location.pathname === "/spendMoney"
+            ? "-"
+            : "+"
+      ) as "+" | "-";
+
+      await dispatch(
+        deleteTransactionWithBalance({
+          itemId: typeof deletedElementId === "string" ? deletedElementId : "",
+          amount:
+            typeof deletedElementAmount === "number" ? deletedElementAmount : 0,
+          type: transactionType,
+        }),
+      ).unwrap();
+      closeModalD();
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <Section>
       <Modal
         isOpen={isOpenD}
         closeModal={closeModalD}
         title="Ви впевнені?"
-        action={async () => {
-          try {
-            const transactionType = (
-              location.pathname === "/getMoney"
-                ? "+"
-                : location.pathname === "/spendMoney"
-                  ? "-"
-                  : "+"
-            ) as "+" | "-";
-
-            await dispatch(
-              deleteTransactionWithBalance({
-                itemId:
-                  typeof deletedElementId === "string" ? deletedElementId : "",
-                amount:
-                  typeof deletedElementAmount === "number"
-                    ? deletedElementAmount
-                    : 0,
-                type: transactionType,
-              }),
-            );
-            closeModalD();
-          } catch (error) {
-            console.log(error);
-          }
-        }}
+        action={handleDelete}
       />
       <GreyBg></GreyBg>
       <Entering

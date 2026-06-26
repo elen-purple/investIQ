@@ -26,7 +26,7 @@ export const GreyBg = styled.div`
   top: 0;
   left: 0;
   z-index: -1;
-  background-color: ${(props: any) => props.theme.colors.secondaryBg};
+  background-color: ${({ theme }) => theme.colors.secondaryBg};
   @media screen and (min-width: 703px) {
     height: 583px;
   }
@@ -91,7 +91,7 @@ export const Div = styled.div`
     border-radius: 0 30px 30px 30px;
     padding: 28px 30px 48px;
     box-shadow: 0 10px 60px 0 rgba(170, 178, 197, 0.2);
-    background-color: ${(props: any) => props.theme.colors.primaryBg};
+    background-color: ${({ theme }) => theme.colors.primaryBg};
   }
 
   @media screen and (min-width: 1098px) {

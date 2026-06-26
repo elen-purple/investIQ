@@ -13,14 +13,14 @@ export const Item = styled.li`
   display: flex;
   justify-content: space-between;
   padding-bottom: 8px;
-  border-bottom: solid 1px ${(props: any) => props.theme.colors.secondaryBg};
+  border-bottom: solid 1px ${({theme})=>theme.colors.secondaryBg};
 `;
 
 export const Title = styled.h3`
   font-weight: 700;
   font-size: 12px;
   letter-spacing: 0.04em;
-  color: ${(props: any) => props.theme.colors.secondaryText};
+  color: ${({theme})=>theme.colors.secondaryText};
   margin-bottom: 6px;
   margin-top: 0;
 `;
@@ -34,7 +34,7 @@ export const Text = styled.p`
   font-weight: 400;
   font-size: 8px;
   letter-spacing: 0.04em;
-  color: ${(props: any) => props.theme.colors.secondaryText};
+  color: ${({theme})=>theme.colors.secondaryText};
   margin: 0;
 `;
 
@@ -60,7 +60,7 @@ export const Btn = styled.button`
 `;
 
 export const Icon = styled.svg`
-  fill: ${(props: any) => props.theme.colors.secondaryText};
+  fill: ${({theme})=>theme.colors.secondaryText};
 `;
 
 export const Table = styled.table`
@@ -85,14 +85,14 @@ export const BodyStyled = styled.tbody`
   }
 
   scrollbar-width: thin;
-  scrollbar-color: ${(props: any) => props.theme.colors.accentBg} transparent;
+  scrollbar-color: ${({theme})=>theme.colors.accentBg} transparent;
   @media screen and (min-width: 1098px) {
     height: 344px;
   }
   height: 346px;
   overflow-y: auto;
   width: 100%;
-  border: 2px solid ${(props: any) => props.theme.colors.secondaryBg};
+  border: 2px solid ${({theme})=>theme.colors.secondaryBg};
 `;
 
 export const TableHead = styled.th`
@@ -100,10 +100,10 @@ export const TableHead = styled.th`
   font-size: 12px;
   letter-spacing: 0.02em;
   text-transform: uppercase;
-  color: ${(props: any) => props.theme.colors.primaryText};
+  color: ${({theme})=>theme.colors.primaryText};
   text-align: left;
   padding: 13px 0 11px;
-  background-color: ${(props: any) => props.theme.colors.secondaryBg};
+  background-color: ${({theme})=>theme.colors.secondaryBg};
 
   &:nth-child(1) {
     padding-left: 21px;
@@ -137,14 +137,14 @@ export const TableHead = styled.th`
 `;
 
 export const Row = styled.tr`
-  border-bottom: solid 2px ${(props: any) => props.theme.colors.secondaryBg};
+  border-bottom: solid 2px ${({theme})=>theme.colors.secondaryBg};
 `;
 
 export const NameStyled = styled.td`
   font-weight: 400;
   font-size: 12px;
   letter-spacing: 0.04em;
-  color: ${(props: any) => props.theme.colors.secondaryText};
+  color: ${({theme})=>theme.colors.secondaryText};
   text-align: left;
   padding: 13px 0;
 

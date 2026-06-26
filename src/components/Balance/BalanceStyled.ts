@@ -21,7 +21,7 @@ export const Subtitle = styled.p`
   font-size: 12px;
   letter-spacing: 0.02em;
   text-align: center;
-  color: ${(props: any) => props.theme.colors.balanceText};
+  color: ${({ theme }) => theme.colors.balanceText};
 `;
 
 export const Wrapper = styled.div`
@@ -42,8 +42,8 @@ export const Input = styled.input`
   padding: 13px 16px;
   border-radius: 16px;
   width: 125px;
-  color: ${(props: any) => props.theme.colors.primaryText};
-  background-color: ${(props: any) => props.theme.colors.secondaryBg};
+  color: ${({ theme }) => theme.colors.primaryText};
+  background-color: ${({ theme }) => theme.colors.secondaryBg};
   font-family: "Roboto", sans-serif;
-  border: 2px solid ${(props: any) => props.theme.colors.primaryBg};
+  border: 2px solid ${({ theme }) => theme.colors.primaryBg};
 `;

@@ -75,11 +75,16 @@ export const TableStats = ({
                     return false;
                   }
                 })
-                .sort((a: any, b: any) => {
-                  return (
-                    new Date(b.date).getTime() - new Date(a.date).getTime()
-                  );
-                })
+                .sort(
+                  (
+                    { date: dateA }: { date: string },
+                    { date: dateB }: { date: string },
+                  ) => {
+                    return (
+                      new Date(dateB).getTime() - new Date(dateA).getTime()
+                    );
+                  },
+                )
                 .map(({ desc, id, amount, category, date, type }) => (
                   <Item key={id}>
                     <div>
@@ -159,11 +164,16 @@ export const TableStats = ({
                       return;
                     }
                   })
-                  .sort((a: any, b: any) => {
-                    return (
-                      new Date(b.date).getTime() - new Date(a.date).getTime()
-                    );
-                  })
+                  .sort(
+                    (
+                      { date: dateA }: { date: string },
+                      { date: dateB }: { date: string },
+                    ) => {
+                      return (
+                        new Date(dateB).getTime() - new Date(dateA).getTime()
+                      );
+                    },
+                  )
                   .map(({ desc, id, amount, category, date, type }) => (
                     <Row key={id}>
                       <NameStyled>

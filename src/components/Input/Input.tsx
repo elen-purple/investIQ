@@ -1,7 +1,7 @@
 import { Error, InputStyled, Label, Text } from "./InputStyled";
 
 interface InputProps {
-  handleChange: any;
+  handleChange: () => void;
   values: string;
   errors: string | undefined;
   touched: any | undefined;

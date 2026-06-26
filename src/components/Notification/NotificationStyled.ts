@@ -41,7 +41,7 @@ export const Title = styled.h3`
   font-weight: 400;
   font-size: 14px;
   line-height: 1.42857;
-  color: ${(props: any) => props.theme.colors.primaryBg};
+  color: ${({ theme }) => theme.colors.primaryBg};
   margin-bottom: 5px;
 `;
 
@@ -49,5 +49,5 @@ export const Text = styled.p`
   font-weight: 400;
   font-size: 12px;
   line-height: 1.33333;
-  color: ${(props: any) => props.theme.colors.primaryBg};
+  color: ${({ theme }) => theme.colors.primaryBg};
 `;

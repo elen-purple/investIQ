@@ -1,5 +1,4 @@
 interface Text {
-  label: string;
   id:
     | "transport"
     | "products"
@@ -17,59 +16,17 @@ interface Text {
 }
 
 export const dataS: Text[] = [
-  {
-    label: "Транспорт",
-    id: "transport",
-  },
-  {
-    label: "Продукти",
-    id: "products",
-  },
-  {
-    label: "Здоров’я",
-    id: "health",
-  },
-  {
-    label: "Алкоголь",
-    id: "alcohole",
-  },
-  {
-    label: "Розваги",
-    id: "entertaining",
-  },
-  {
-    label: "Все для дому",
-    id: "home",
-  },
-  {
-    label: "Техніка",
-    id: "technic",
-  },
-  {
-    label: "Комуналка, зв’язок",
-    id: "connection",
-  },
-  {
-    label: "Спорт, хобі",
-    id: "sport",
-  },
-  {
-    label: "Навчання",
-    id: "education",
-  },
-  {
-    label: "Інше",
-    id: "other",
-  },
+  { id: "transport" },
+  { id: "products" },
+  { id: "health" },
+  { id: "alcohole" },
+  { id: "entertaining" },
+  { id: "home" },
+  { id: "technic" },
+  { id: "connection" },
+  { id: "sport" },
+  { id: "education" },
+  { id: "other" },
 ];
 
-export const dataG: Text[] = [
-  {
-    label: "ЗП",
-    id: "salary",
-  },
-  {
-    label: "Дод. дохід",
-    id: "addition",
-  },
-];
+export const dataG: Text[] = [{ id: "salary" }, { id: "addition" }];

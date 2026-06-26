@@ -10,7 +10,7 @@ interface ButtonProps {
 }
 
 export const Button = ({ bg, shading, label, onClick, type }: ButtonProps) => {
-  const theme: any = useTheme();
+  const theme = useTheme();
 
   const backgroundColor =
     bg === "orange"

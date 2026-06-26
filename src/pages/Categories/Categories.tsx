@@ -26,21 +26,26 @@ import top from "../../imgs/desktop/desktop-top.png";
 export const Categories = () => {
   const location = useLocation();
   const notes = useAppSelector((state) => selectNotes(state.money));
-  const months: { month: number; year: number }[] = [];
-  if (notes.length > 0) {
-    const firstDate = new Date(notes[0].date);
-    const endDate = new Date();
-    const cur = new Date(firstDate.getFullYear(), firstDate.getMonth(), 1);
+  const months = useMemo(() => {
+    const result: { month: number; year: number }[] = [];
 
-    while (
-      cur.getFullYear() < endDate.getFullYear() ||
-      (cur.getFullYear() === endDate.getFullYear() &&
-        cur.getMonth() <= endDate.getMonth())
-    ) {
-      months.push({ month: cur.getMonth() + 1, year: cur.getFullYear() });
-      cur.setMonth(cur.getMonth() + 1);
+    if (notes.length > 0) {
+      const firstDate = new Date(notes[0].date);
+      const endDate = new Date();
+      const cur = new Date(firstDate.getFullYear(), firstDate.getMonth(), 1);
+
+      while (
+        cur.getFullYear() < endDate.getFullYear() ||
+        (cur.getFullYear() === endDate.getFullYear() &&
+          cur.getMonth() <= endDate.getMonth())
+      ) {
+        result.push({ month: cur.getMonth() + 1, year: cur.getFullYear() });
+        cur.setMonth(cur.getMonth() + 1);
+      }
     }
-  }
+
+    return result;
+  }, [notes]);
 
   const sortedMonths = useMemo(() => {
     return months.sort(

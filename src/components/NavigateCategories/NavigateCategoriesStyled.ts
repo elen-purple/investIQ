@@ -12,10 +12,10 @@ export const Text = styled.p`
   font-weight: 400;
   font-size: 12px;
   letter-spacing: 0.04em;
-  color: ${(props: any) => props.theme.colors.balanceText};
+  color: ${({ theme }) => theme.colors.balanceText};
   padding-top: 7px;
 `;
 
 export const Icon = styled.svg`
-  fill: ${(props: any) => props.theme.colors.secondaryText};
+  fill: ${({ theme }) => theme.colors.secondaryText};
 `;

@@ -20,7 +20,7 @@ export const Wrapper = styled.div`
   position: relative;
   @media screen and (min-width: 703px) {
     padding: 22px 0 34px;
-    background-color: ${(props: any) => props.theme.colors.primaryBg};
+    background-color: ${({theme})=>theme.colors.primaryBg};
     box-shadow: 0 10px 60px 0 rgba(170, 178, 197, 0.2);
     border-radius: 30px;
     margin-top: 30px;
@@ -58,7 +58,7 @@ export const GreyBg = styled.div`
   z-index: -1;
   height: 342px;
   border-radius: 0 0 0 120px;
-  background-color: ${(props: any) => props.theme.colors.secondaryBg};
+  background-color: ${({theme})=>theme.colors.secondaryBg};
 
   @media screen and (min-width: 703px) {
     height: 583px;

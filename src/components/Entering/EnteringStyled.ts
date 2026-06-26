@@ -17,7 +17,7 @@ export const GreyBgInput = styled.div`
   top: 60px;
   left: 0;
   z-index: 1;
-  background-color: ${(props: any) => props.theme.colors.secondaryBg};
+  background-color: ${({theme})=>theme.colors.secondaryBg};
 `;
 
 export const ModalStyled = styled.div`
@@ -27,7 +27,7 @@ export const ModalStyled = styled.div`
   }
   padding: 15px 0 0;
   height: 100%;
-  background-color: ${(props: any) => props.theme.colors.primaryBg};
+  background-color: ${({theme})=>theme.colors.primaryBg};
 `;
 
 export const ArrowBtn = styled.button`
@@ -37,7 +37,7 @@ export const ArrowBtn = styled.button`
 `;
 
 export const ArrowIcon = styled.svg`
-  fill: ${(props: any) => props.theme.colors.accentBg};
+  fill: ${({theme})=>theme.colors.accentBg};
 `;
 
 export const Input = styled.input`
@@ -45,27 +45,27 @@ export const Input = styled.input`
   height: 44px;
   border-radius: 16px 16px 0 0;
   padding: 0 20px;
-  background-color: ${(props: any) => props.theme.colors.secondaryBg};
-  border: ${(props: any) => props.theme.colors.primaryBg} 2px solid;
+  background-color: ${({theme})=>theme.colors.secondaryBg};
+  border: ${({theme})=>theme.colors.primaryBg} 2px solid;
 
   font-family: "Roboto", sans-serif;
   font-weight: 400;
   font-size: 12px;
   letter-spacing: 0.02em;
-  color: ${(props: any) => props.theme.colors.secondaryText};
+  color: ${({theme})=>theme.colors.secondaryText};
   &::placeholder {
     font-family: "Roboto", sans-serif;
     font-weight: 400;
     font-size: 12px;
     letter-spacing: 0.02em;
-    color: ${(props: any) => props.theme.colors.placeholderText};
+    color: ${({theme})=>theme.colors.placeholderText};
   }
 
   @media screen and (min-width: 703px) {
     width: 192px;
-    border: 2px solid ${(props: any) => props.theme.colors.secondaryBg};
+    border: 2px solid ${({theme})=>theme.colors.secondaryBg};
     border-radius: 16px 0 0 0;
-    background-color: ${(props: any) => props.theme.colors.primaryBg};
+    background-color: ${({theme})=>theme.colors.primaryBg};
   }
 
   @media screen and (min-width: 1098px) {
@@ -82,13 +82,13 @@ export const Btn = styled.button`
   height: 44px;
   border-radius: 0 0 16px 0;
   padding: 0 20px;
-  background-color: ${(props: any) => props.theme.colors.secondaryBg};
-  border: ${(props: any) => props.theme.colors.primaryBg} 2px solid;
+  background-color: ${({theme})=>theme.colors.secondaryBg};
+  border: ${({theme})=>theme.colors.primaryBg} 2px solid;
   font-family: "Roboto", sans-serif;
   font-weight: 400;
   font-size: 12px;
   letter-spacing: 0.02em;
-  color: ${(props: any) => props.theme.colors.placeholderText};
+  color: ${({theme})=>theme.colors.placeholderText};
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -96,9 +96,9 @@ export const Btn = styled.button`
 
   @media screen and (min-width: 703px) {
     width: 171px;
-    border: 2px solid ${(props: any) => props.theme.colors.secondaryBg};
+    border: 2px solid ${({theme})=>theme.colors.secondaryBg};
     border-radius: 0;
-    background-color: ${(props: any) => props.theme.colors.primaryBg};
+    background-color: ${({theme})=>theme.colors.primaryBg};
   }
 
   @media screen and (min-width: 1098px) {
@@ -108,7 +108,7 @@ export const Btn = styled.button`
 
 export const ArrowDown = styled.svg`
   fill: none;
-  stroke: ${(props: any) => props.theme.colors.placeholderText};
+  stroke: ${({theme})=>theme.colors.placeholderText};
 `;
 
 export const WrapperInput = styled.div`
@@ -132,12 +132,12 @@ export const BtnItem = styled.button`
   font-weight: 400;
   font-size: 12px;
   letter-spacing: 0.02em;
-  color: ${(props: any) => props.theme.colors.placeholderText};
-  background-color: ${(props: any) => props.theme.colors.primaryBg};
+  color: ${({theme})=>theme.colors.placeholderText};
+  background-color: ${({theme})=>theme.colors.primaryBg};
 
   &:hover {
-    color: ${(props: any) => props.theme.colors.secondaryText};
-    background-color: ${(props: any) => props.theme.colors.secondaryBg};
+    color: ${({theme})=>theme.colors.secondaryText};
+    background-color: ${({theme})=>theme.colors.secondaryBg};
   }
 `;
 
@@ -147,8 +147,8 @@ export const WrapperBtn = styled.div`
 `;
 
 export const NumberInput = styled.input`
-  border: 2px solid ${(props: any) => props.theme.colors.primaryBg};
-  background-color: ${(props: any) => props.theme.colors.secondaryBg};
+  border: 2px solid ${({theme})=>theme.colors.primaryBg};
+  background-color: ${({theme})=>theme.colors.secondaryBg};
   border-radius: 22px;
   width: 183px;
   height: 44px;
@@ -158,13 +158,13 @@ export const NumberInput = styled.input`
   font-size: 12px;
   letter-spacing: 0.02em;
   text-transform: uppercase;
-  color: ${(props: any) => props.theme.colors.primaryText};
+  color: ${({theme})=>theme.colors.primaryText};
 
   @media screen and (min-width: 703px) {
     width: 104px;
-    border: 2px solid ${(props: any) => props.theme.colors.secondaryBg};
+    border: 2px solid ${({theme})=>theme.colors.secondaryBg};
     border-radius: 0 16px 16px 0;
-    background-color: ${(props: any) => props.theme.colors.primaryBg};
+    background-color: ${({theme})=>theme.colors.primaryBg};
   }
 
   @media screen and (min-width: 1098px) {
@@ -188,7 +188,7 @@ export const CalculatorIcon = styled.svg`
   position: absolute;
   right: 20px;
   top: 12px;
-  fill: ${(props: any) => props.theme.colors.secondaryText};
+  fill: ${({theme})=>theme.colors.secondaryText};
 `;
 
 export const DateText = styled.p`
@@ -196,11 +196,11 @@ export const DateText = styled.p`
   font-size: 12px;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: ${(props: any) => props.theme.colors.secondaryText};
+  color: ${({theme})=>theme.colors.secondaryText};
 `;
 
 export const DateIcon = styled.svg`
-  fill: ${(props: any) => props.theme.colors.secondaryText};
+  fill: ${({theme})=>theme.colors.secondaryText};
 `;
 
 export const DateWrapper = styled.div`

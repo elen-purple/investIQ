@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Wrapper = styled.div`
   box-shadow: 5px 10px 20px 0 rgba(170, 178, 197, 0.4);
-  background-color: ${(props: any) => props.theme.colors.primaryBg};
+  background-color: ${({ theme }) => theme.colors.primaryBg};
   border-radius: 20px;
   width: 100%;
   height: 85px;
@@ -32,7 +32,7 @@ export const Wrap = styled.div`
 export const Line = styled.div`
   width: 1px;
   height: 70px;
-  background-color: ${(props: any) => props.theme.colors.lineColor};
+  background-color: ${({ theme }) => theme.colors.lineColor};
 
   @media screen and (min-width: 703px) {
     height: 36px;
@@ -43,7 +43,7 @@ export const Title = styled.p`
   font-weight: 700;
   font-size: 14px;
   text-align: center;
-  color: ${(props: any) => props.theme.colors.secondaryText};
+  color: ${({ theme }) => theme.colors.secondaryText};
   margin-bottom: 2px;
 
   @media screen and (min-width: 703px) {
@@ -56,7 +56,7 @@ export const Red = styled.p`
   font-size: 14px;
   letter-spacing: 0.04em;
   text-align: center;
-  color: ${(props: any) => props.theme.colors.spendColor};
+  color: ${({ theme }) => theme.colors.spendColor};
 `;
 
 export const Green = styled.p`
@@ -64,5 +64,5 @@ export const Green = styled.p`
   font-size: 14px;
   letter-spacing: 0.04em;
   text-align: center;
-  color: ${(props: any) => props.theme.colors.getColor};
+  color: ${({ theme }) => theme.colors.getColor};
 `;

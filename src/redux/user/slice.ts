@@ -36,9 +36,12 @@ const userSlice = createSlice({
     setUser: (state, action) => {
       state.userId = action.payload;
       state.isLoading = false;
+      state.isAuth = true;
     },
     clearUser: (state) => {
       state.userId = null;
+      state.user = null;
+      state.isAuth = false;
       state.isLoading = false;
     },
     setAuthLoading: (state) => {

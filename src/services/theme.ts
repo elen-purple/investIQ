@@ -15,3 +15,5 @@ export const theme = {
     getColor: "#407946",
   },
 };
+
+export type CustomTheme = typeof theme;

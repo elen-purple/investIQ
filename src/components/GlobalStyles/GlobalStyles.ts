@@ -13,8 +13,8 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   *::selection { 
-    background-color: ${(props: any) => props.theme.colors.accentBg};
-    color: ${(props: any) => props.theme.colors.primaryBg};
+    background-color: ${({theme})=>theme.colors.accentBg};
+    color: ${({theme})=>theme.colors.primaryBg};
   }
   
   body {

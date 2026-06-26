@@ -37,21 +37,7 @@ import { Container } from "../Container/Container";
 interface FormValues {
   desc: string;
   amount: string;
-  category:
-    | "default"
-    | "transport"
-    | "products"
-    | "health"
-    | "alcohole"
-    | "entertaining"
-    | "home"
-    | "technic"
-    | "connection"
-    | "sport"
-    | "education"
-    | "other"
-    | "salary"
-    | "addition";
+  category: string;
 }
 
 interface FormErrors {
@@ -85,12 +71,53 @@ export const Entering = ({
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-  let data: { label: string; id: any }[];
+  let data: { id: string }[];
   if (location.pathname === "/spendMoney") {
     data = dataS;
   } else if (location.pathname === "/getMoney") {
     data = dataG;
   }
+
+  const handleValidate = (values: FormValues) => {
+    const errors: FormErrors = {};
+    if (!values.desc) {
+      errors.desc = "Required";
+    } else if (values.desc.length < 4) {
+      errors.desc =
+        "The description is too short. Must contain at least 4 symbols";
+    }
+    if (!values.amount) {
+      errors.amount = "Required";
+    } else if (!Number(values.amount) || Number(values.amount) <= 0) {
+      errors.amount = "Amount must be a positive number";
+    }
+    if (values.category === "default") {
+      errors.category = "Choose a category";
+    }
+    return errors;
+  };
+
+  const handleSumbit = async (values: FormValues, resetForm: () => void) => {
+    await dispatch(
+      addTransactionWithBalance({
+        desc: values.desc,
+        amount: Number.parseFloat(values.amount),
+        category: values.category,
+        type:
+          location.pathname === "/getMoney"
+            ? "+"
+            : location.pathname === "/spendMoney"
+              ? "-"
+              : "",
+      }),
+    );
+    values.amount = "";
+    values.category = "default";
+    values.desc = "";
+    resetForm();
+    setModal(false);
+    setList(false);
+  };
 
   return (
     <>
@@ -118,48 +145,10 @@ export const Entering = ({
                       amount: "",
                       category: "default",
                     }}
-                    validate={(values: FormValues) => {
-                      const errors: FormErrors = {};
-                      if (!values.desc) {
-                        errors.desc = "Required";
-                      } else if (values.desc.length < 4) {
-                        errors.desc =
-                          "The description is too short. Must contain at least 4 symbols";
-                      }
-                      if (!values.amount) {
-                        errors.amount = "Required";
-                      } else if (
-                        !Number(values.amount) ||
-                        Number(values.amount) <= 0
-                      ) {
-                        errors.amount = "Amount must be a positive number";
-                      }
-                      if (values.category === "default") {
-                        errors.category = "Choose a category";
-                      }
-                      return errors;
-                    }}
-                    onSubmit={async (values: FormValues, { resetForm }) => {
-                      await dispatch(
-                        addTransactionWithBalance({
-                          desc: values.desc,
-                          amount: Number.parseFloat(values.amount),
-                          category: values.category,
-                          type:
-                            location.pathname === "/getMoney"
-                              ? "+"
-                              : location.pathname === "/spendMoney"
-                                ? "-"
-                                : "",
-                        }),
-                      );
-                      values.amount = "";
-                      values.category = "default";
-                      values.desc = "";
-                      resetForm();
-                      setModal(false);
-                      setList(false);
-                    }}
+                    validate={(values: FormValues) => handleValidate(values)}
+                    onSubmit={(values: FormValues, { resetForm }) =>
+                      handleSumbit(values, resetForm)
+                    }
                   >
                     {({ values, handleChange, handleSubmit, resetForm }) => (
                       <form onSubmit={handleSubmit}>
@@ -195,7 +184,7 @@ export const Entering = ({
                             </Btn>
                             {list ? (
                               <BtnList>
-                                {data?.map(({ label, id }) => (
+                                {data?.map(({ id }) => (
                                   <li key={id} id={id}>
                                     <BtnItem
                                       onClick={() => {
@@ -204,7 +193,11 @@ export const Entering = ({
                                       }}
                                       type="button"
                                     >
-                                      {label}
+                                      {
+                                        CATEGORY_LABELS[
+                                          id as keyof typeof CATEGORY_LABELS
+                                        ]
+                                      }
                                     </BtnItem>
                                   </li>
                                 ))}
@@ -283,46 +276,10 @@ export const Entering = ({
           ) : (
             <Formik
               initialValues={{ desc: "", amount: "", category: "default" }}
-              validate={(values: FormValues) => {
-                const errors: FormErrors = {};
-                if (!values.desc) {
-                  errors.desc = "Required";
-                } else if (values.desc.length < 4) {
-                  errors.desc =
-                    "The description is too short. Must contain at least 4 symbols";
-                }
-                if (!values.amount) {
-                  errors.amount = "Required";
-                } else if (
-                  !Number(values.amount) ||
-                  Number(values.amount) <= 0
-                ) {
-                  errors.amount = "Amount must be a positive number";
-                }
-                if (values.category === "default") {
-                  errors.category = "Choose a category";
-                }
-                return errors;
-              }}
-              onSubmit={async (values: FormValues, { resetForm }) => {
-                await dispatch(
-                  addTransactionWithBalance({
-                    desc: values.desc,
-                    amount: Number.parseFloat(values.amount),
-                    category: values.category,
-                    type:
-                      location.pathname === "/getMoney"
-                        ? "+"
-                        : location.pathname === "/spendMoney"
-                          ? "-"
-                          : "",
-                  }),
-                );
-                values.amount = "";
-                values.category = "default";
-                values.desc = "";
-                resetForm();
-              }}
+              validate={(values: FormValues) => handleValidate(values)}
+              onSubmit={(values: FormValues, { resetForm }) =>
+                handleSumbit(values, resetForm)
+              }
             >
               {({ values, handleChange, handleSubmit, resetForm }) => (
                 <FormStyled onSubmit={handleSubmit}>
@@ -372,7 +329,7 @@ export const Entering = ({
                           </Btn>
                           {list ? (
                             <BtnList>
-                              {data?.map(({ label, id }) => (
+                              {data?.map(({ id }) => (
                                 <li key={id} id={id}>
                                   <BtnItem
                                     onClick={() => {
@@ -381,7 +338,11 @@ export const Entering = ({
                                     }}
                                     type="button"
                                   >
-                                    {label}
+                                    {
+                                      CATEGORY_LABELS[
+                                        id as keyof typeof CATEGORY_LABELS
+                                      ]
+                                    }
                                   </BtnItem>
                                 </li>
                               ))}

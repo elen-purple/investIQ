@@ -15,7 +15,7 @@ export const Slider = styled.div`
 export const Arrow = styled.svg`
   fill: none;
   stroke-width: 2px;
-  stroke: ${(props: any) => props.theme.colors.accentBg};
+  stroke: ${({ theme }) => theme.colors.accentBg};
 
   transform: rotate(90deg);
 `;
@@ -25,5 +25,5 @@ export const Text = styled.p`
   font-size: 14px;
   letter-spacing: 0.02em;
   text-transform: uppercase;
-  color: ${(props: any) => props.theme.colors.primaryText};
+  color: ${({ theme }) => theme.colors.primaryText};
 `;

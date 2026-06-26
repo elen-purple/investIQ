@@ -17,7 +17,7 @@ export const Div = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: ${(props: any) => props.theme.colors.primaryBg};
+  background-color: ${({ theme }) => theme.colors.primaryBg};
   padding: 50px 57px 60px;
   box-shadow: 10px 10px 30px 0 rgba(82, 85, 95, 0.4);
   border-radius: 30px;
@@ -28,7 +28,7 @@ export const Title = styled.h2`
   font-size: 14px;
   letter-spacing: 0.02em;
   text-align: center;
-  color: ${(props: any) => props.theme.colors.secondaryText};
+  color: ${({ theme }) => theme.colors.secondaryText};
   margin-bottom: 20px;
 `;
 
@@ -41,7 +41,7 @@ export const Close = styled.button`
 `;
 
 export const Icon = styled.svg`
-  stroke: ${(props: any) => props.theme.colors.secondaryText};
+  stroke: ${({ theme }) => theme.colors.secondaryText};
 `;
 
 export const Wrap = styled.div`

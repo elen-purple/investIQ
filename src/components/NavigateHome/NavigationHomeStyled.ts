@@ -12,14 +12,14 @@ export const LinkStyled = styled(Link)`
 `;
 
 export const Icon = styled.svg`
-  fill: ${(props: any) => props.theme.colors.accentBg};
+  fill: ${({ theme }) => theme.colors.accentBg};
 `;
 
 export const Text = styled.p`
   font-weight: 400;
   font-size: 12px;
   letter-spacing: 0.04em;
-  color: ${(props: any) => props.theme.colors.balanceText};
+  color: ${({ theme }) => theme.colors.balanceText};
   display: none;
 
   @media screen and (min-width: 703px) {

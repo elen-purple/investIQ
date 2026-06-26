@@ -21,7 +21,7 @@ export const Sum = styled.p`
   letter-spacing: 0.04em;
   text-transform: uppercase;
   text-align: center;
-  color: ${(props: any) => props.theme.colors.secondaryText};
+  color: ${({ theme }) => theme.colors.secondaryText};
 `;
 
 export const Wrapper = styled.div`
@@ -42,7 +42,7 @@ export const Block = styled.div`
   bottom: 6px;
   left: 50%;
   transform: translate(-50%, 0);
-  background-color: ${(props: any) => props.theme.colors.secondaryBg};
+  background-color: ${({ theme }) => theme.colors.secondaryBg};
 `;
 
 export const Btn = styled.button`
@@ -59,5 +59,5 @@ export const Title = styled.h3`
   letter-spacing: 0.02em;
   text-transform: uppercase;
   text-align: center;
-  color: ${(props: any) => props.theme.colors.secondaryText};
+  color: ${({ theme }) => theme.colors.secondaryText};
 `;

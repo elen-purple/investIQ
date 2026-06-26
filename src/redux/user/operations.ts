@@ -6,65 +6,57 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { auth } from "../../services/firebase";
+import type { RootState } from "../store";
 
-interface RegisterCredentials {
-  email: string;
-  password: string;
-  name: string;
-}
+export const register = createAsyncThunk<
+  { uid: string; email: string; displayName: string },
+  { email: string; password: string; name: string },
+  { state: RootState }
+>("user/register", async ({ email, password, name }, thunkAPI) => {
+  try {
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password,
+    );
+    const user = userCredential.user;
 
-interface LogInCredentials {
-  email: string;
-  password: string;
-}
+    await updateProfile(user, {
+      displayName: name,
+    });
 
-export const register = createAsyncThunk(
-  "user/register",
-  async ({ email, password, name }: RegisterCredentials, thunkAPI) => {
-    try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password,
-      );
-      const user = userCredential.user;
+    return {
+      uid: user.uid,
+      email: user.email ?? "",
+      displayName: name,
+    };
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.message);
+  }
+});
 
-      await updateProfile(user, {
-        displayName: name,
-      });
+export const logIn = createAsyncThunk<
+  { uid: string; email: string; displayName: string },
+  { email: string; password: string },
+  { state: RootState }
+>("user/logIn", async ({ email, password }, thunkAPI) => {
+  try {
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password,
+    );
+    const user = userCredential.user;
 
-      return {
-        uid: user.uid,
-        email: user.email,
-        displayName: name,
-      };
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.message);
-    }
-  },
-);
-
-export const logIn = createAsyncThunk(
-  "user/logIn",
-  async ({ email, password }: LogInCredentials, thunkAPI) => {
-    try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password,
-      );
-      const user = userCredential.user;
-
-      return {
-        uid: user.uid,
-        email: user.email,
-        displayName: user.displayName,
-      };
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.message);
-    }
-  },
-);
+    return {
+      uid: user.uid,
+      email: user.email ?? "",
+      displayName: user.displayName ?? "",
+    };
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.message);
+  }
+});
 
 export const logOut = createAsyncThunk("user/logOut", async (_, thunkAPI) => {
   try {

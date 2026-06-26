@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { db } from "../../services/firebase";
 import { doc, collection, runTransaction } from "firebase/firestore";
+import type { RootState } from "../store";
 
 interface AddTransactionPayload {
   desc: string;
@@ -21,11 +22,12 @@ export const addTransactionWithBalance = createAsyncThunk<
     };
     newBalance: number;
   },
-  AddTransactionPayload
+  AddTransactionPayload,
+  { state: RootState }
 >(
   "money/addTransactionWithBalance",
   async ({ desc, amount, category, type }, thunkAPI) => {
-    const state: any = thunkAPI.getState();
+    const state = thunkAPI.getState();
     const userId = state.user?.userId;
 
     if (!userId) return thunkAPI.rejectWithValue("Користувач не авторизований");
