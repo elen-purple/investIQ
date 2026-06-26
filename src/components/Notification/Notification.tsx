@@ -1,13 +1,17 @@
-import { selectBalance } from "../../redux/balance/selectors";
+import {
+  selectBalance,
+  selectBalanceIsReady,
+} from "../../redux/balance/selectors";
 import { useAppSelector } from "../../redux/store";
 import { Block, Icon, Text, Title, Wrapper } from "./NotificationStyled";
 
 export const Notification = () => {
   const balance = useAppSelector(selectBalance);
+  const balanceIsReady = useAppSelector(selectBalanceIsReady);
 
   return (
     <>
-      {balance === 0 ? (
+      {balanceIsReady && balance === 0 ? (
         <Wrapper>
           <Icon width="30" height="16">
             <use href="#triangle"></use>
