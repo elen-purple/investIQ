@@ -22,7 +22,9 @@ const initialState: InitialState = {
 const moneySlice = createSlice({
   name: "money",
   initialState,
-  reducers: {},
+  reducers: {
+    resetMoney: () => initialState,
+  },
   extraReducers: (builder) =>
     builder
       .addCase(fetchMoney.fulfilled, (state, action) => {
@@ -66,4 +68,5 @@ const moneySlice = createSlice({
       .addCase(logOut.fulfilled, () => initialState),
 });
 
+export const { resetMoney } = moneySlice.actions;
 export const moneyReducer = moneySlice.reducer;

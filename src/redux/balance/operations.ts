@@ -17,11 +17,18 @@ export const fetchBalance = createAsyncThunk<
     const userDocRef = doc(db, "users", userId);
     const docSnap = await getDoc(userDocRef);
 
-    if (docSnap.exists() && docSnap.data().balance !== undefined) {
-      return { balance: docSnap.data().balance };
-    } else {
-      return { balance: 0 };
+    if (!docSnap.exists()) return { balance: 0 };
+
+    const balance = docSnap.data().balance;
+    if (balance === undefined) return { balance: 0 };
+
+    if (typeof balance !== "number" || !Number.isFinite(balance)) {
+      return thunkAPI.rejectWithValue(
+        "У Firebase збережено некоректний баланс",
+      );
     }
+
+    return { balance };
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Unknown error";
     return thunkAPI.rejectWithValue(message);

@@ -27,7 +27,6 @@ interface HomePageProps {
   isOpenD: boolean;
   closeModalD: () => void;
   deletedElementId: string | null;
-  deletedElementAmount: number | null;
   openModalL: () => void;
 }
 
@@ -35,13 +34,11 @@ const HomePage = ({
   isOpenD,
   closeModalD,
   deletedElementId,
-  deletedElementAmount,
   openModalL,
 }: HomePageProps) => {
   const [modal, setModal] = useState<boolean>(false);
   const handleDelete = useDeleteTransaction({
     deletedElementId,
-    deletedElementAmount,
   });
 
   return (

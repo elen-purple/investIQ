@@ -23,7 +23,9 @@ const initialState: Balance = {
 const balanceSlice = createSlice({
   name: "balance",
   initialState,
-  reducers: {},
+  reducers: {
+    resetBalance: () => initialState,
+  },
   extraReducers: (builder) =>
     builder
       .addCase(fetchBalance.pending, (state) => {
@@ -68,4 +70,5 @@ const balanceSlice = createSlice({
       .addCase(logOut.fulfilled, () => initialState),
 });
 
+export const { resetBalance } = balanceSlice.actions;
 export const balanceReducer = balanceSlice.reducer;

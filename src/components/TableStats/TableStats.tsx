@@ -26,14 +26,12 @@ import { formatDate } from "../../utils/date";
 
 interface TableStatsProps {
   setDeletedElementId: React.Dispatch<React.SetStateAction<string | null>>;
-  setDeletedElementAmount: React.Dispatch<React.SetStateAction<number | null>>;
   openModalD: () => void;
 }
 
 export const TableStats = ({
   openModalD,
   setDeletedElementId,
-  setDeletedElementAmount,
 }: TableStatsProps) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 703);
   useEffect(() => {
@@ -49,14 +47,9 @@ export const TableStats = ({
   const notes = useAppSelector((state) => selectNotes(state.money));
   const isLoading = useAppSelector((state) => selectIsLoading(state.money));
 
-  const handleDelete = (
-    e: React.MouseEvent<HTMLButtonElement>,
-    id: string,
-    amount: number,
-  ) => {
+  const handleDelete = (e: React.MouseEvent<HTMLButtonElement>, id: string) => {
     if (e.currentTarget.closest(`[data-action="delete"]`)) {
       setDeletedElementId(id);
-      setDeletedElementAmount(amount);
       openModalD();
     }
   };
@@ -117,7 +110,7 @@ export const TableStats = ({
                       </Sum>
                       <Btn
                         onClick={(e) => {
-                          handleDelete(e, id, amount);
+                          handleDelete(e, id);
                         }}
                         id={id}
                         data-action="delete"
@@ -183,7 +176,7 @@ export const TableStats = ({
                       <Data>
                         <Btn
                           onClick={(e) => {
-                            handleDelete(e, id, amount);
+                            handleDelete(e, id);
                           }}
                           id={id}
                           data-action="delete"

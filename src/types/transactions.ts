@@ -14,3 +14,7 @@ export interface MoneyEntry {
 export const isTransactionType = (value: unknown): value is TransactionType => {
   return value === "+" || value === "-";
 };
+
+export const isValidTransactionAmount = (value: unknown): value is number => {
+  return typeof value === "number" && Number.isFinite(value) && value > 0;
+};

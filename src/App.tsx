@@ -18,6 +18,8 @@ import { GlobalStyle } from "./components/GlobalStyles/GlobalStyles";
 import { ThemeProvider } from "styled-components";
 import { theme } from "./services/theme";
 import { Text, Wrapper } from "./AppStyled";
+import { resetMoney } from "./redux/money/slice";
+import { resetBalance } from "./redux/balance/slice";
 
 function App() {
   const {
@@ -31,9 +33,6 @@ function App() {
     closeModal: closeModalD,
   } = useModal(false);
   const [deletedElementId, setDeletedElementId] = useState<string | null>(null);
-  const [deletedElementAmount, setDeletedElementAmount] = useState<
-    number | null
-  >(null);
 
   const { isLoading } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
@@ -56,6 +55,8 @@ function App() {
         dispatch(fetchBalance());
       } else {
         dispatch(clearUser());
+        dispatch(resetMoney());
+        dispatch(resetBalance());
       }
     });
 
@@ -93,7 +94,6 @@ function App() {
                     <HomePage
                       openModalL={openModalL}
                       deletedElementId={deletedElementId}
-                      deletedElementAmount={deletedElementAmount}
                       isOpenD={isOpenD}
                       closeModalD={closeModalD}
                     />
@@ -106,7 +106,6 @@ function App() {
                 element={
                   <TableStats
                     setDeletedElementId={setDeletedElementId}
-                    setDeletedElementAmount={setDeletedElementAmount}
                     openModalD={async () => openModalD()}
                   />
                 }
@@ -116,7 +115,6 @@ function App() {
                 element={
                   <TableStats
                     setDeletedElementId={setDeletedElementId}
-                    setDeletedElementAmount={setDeletedElementAmount}
                     openModalD={async () => openModalD()}
                   />
                 }

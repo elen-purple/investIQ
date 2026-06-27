@@ -2,7 +2,11 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "../../services/firebase";
 import type { RootState } from "../store";
-import { isTransactionType, type MoneyEntry } from "../../types/transactions";
+import {
+  isTransactionType,
+  isValidTransactionAmount,
+  type MoneyEntry,
+} from "../../types/transactions";
 import { isCategoryId } from "../../constants/categories";
 
 export const fetchMoney = createAsyncThunk<
@@ -21,11 +25,28 @@ export const fetchMoney = createAsyncThunk<
     querySnapshot.forEach((doc) => {
       const data = doc.data();
 
-      if (!isTransactionType(data.type) || !isCategoryId(data.category)) return;
+      if (
+        !isTransactionType(data.type) ||
+        !isCategoryId(data.category) ||
+        !isValidTransactionAmount(data.amount) ||
+        typeof data.desc !== "string" ||
+        data.desc.trim() === ""
+      ) {
+        return;
+      }
+
+      const rawDate =
+        typeof data.date?.toDate === "function"
+          ? data.date.toDate()
+          : new Date(data.date);
+
+      if (!(rawDate instanceof Date) || !Number.isFinite(rawDate.getTime())) {
+        return;
+      }
 
       items.push({
         id: doc.id,
-        date: data.date?.toDate ? data.date.toDate().toISOString() : data.date,
+        date: rawDate.toISOString(),
         desc: data.desc,
         amount: data.amount,
         category: data.category,
